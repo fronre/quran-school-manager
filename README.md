@@ -8,9 +8,9 @@
 **برنامج لإدارة الجمعيات والمدارس القرآنية: يعمل على ويندوز دون إنترنت، وبياناتكم تبقى عندكم.**
 
 ![Windows](https://img.shields.io/badge/Windows-10%20%7C%2011-064E3B)
-![Offline](https://img.shields.io/badge/يعمل-دون%20إنترنت-0F766E)
-![Version](https://img.shields.io/badge/النسخة-0.1.0%20تجريبية-B48E43)
-![Tests](https://img.shields.io/badge/الاختبارات-704%20ناجحة-166534)
+![Offline](https://img.shields.io/badge/works-offline-0F766E)
+![Version](https://img.shields.io/badge/version-0.1.0%20trial-B48E43)
+![Tests](https://img.shields.io/badge/tests-704%20passing-166534)
 
 <img src="docs/screenshots/home.png" alt="الصفحة الرئيسية" width="860">
 

@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مشكاة — نموذج التصميم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Amiri+Quran&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS (see docs/DESIGN_SYSTEM.md) ============ */
+:root{
+  --em:#064E3B; --deep:#003527; --brass:#B48E43; --brass-ink:#8A6A2B; --brass-lt:#C9A55B;
+  --teal:#0F766E; --ivory:#F4F5F0; --white:#fff; --ink:#0F172A; --ink2:#334155; --ink3:#566377;
+  --line:#DADDD0; --line-2:#C9CEBF; --line-strong:#6B7C73; --zebra:#FAFAF6; --hover:#EEF1EA;
+  --ok:#166534; --ok-bg:#E6F2EA; --bad:#B42318; --bad-bg:#FBEAE8; --warn:#92400E; --warn-bg:#FBF0E1;
+  --teal-bg:#E1F0EE; --brass-bg:#F4ECD9; --brass-bg-ink:#6F5320;
+  --side:#003527; --side-ink:#CFE3DA; --side-ink-2:#9FB8AC;
+  --font-ar:"IBM Plex Sans Arabic","Segoe UI",Tahoma,sans-serif;
+  --font-lat:"IBM Plex Sans","Segoe UI",sans-serif;
+  --font-quran:"Amiri Quran","Traditional Arabic",serif;
+  --r-1:4px; --r-2:6px; --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px;
+  --shadow-pop:0 8px 24px rgba(0,53,39,.16), 0 1px 0 rgba(0,53,39,.08);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--ivory);color:var(--ink);font-family:var(--font-ar);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+.num,.lat{font-family:var(--font-lat);font-variant-numeric:tabular-nums lining-nums;direction:ltr;unicode-bidi:isolate;display:inline-block}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px;border-radius:3px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+svg.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* ============ PROTOTYPE BAR (not part of product) ============ */
+.protobar{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--line);display:flex;gap:var(--sp-2);align-items:center;flex-wrap:wrap;padding:8px 16px;font-size:13.5px}
+.protobar b{color:var(--em);margin-inline-end:8px}
+.protobar button{border:1px solid var(--line-2);background:#fff;border-radius:999px;padding:3px 12px;cursor:pointer}
+.protobar button[aria-pressed="true"]{background:var(--em);color:#fff;border-color:var(--em)}
+.protobar .hint{color:var(--ink3);margin-inline-start:auto}
+
+/* ============ GENERIC ============ */
+.screen{display:none}.screen.on{display:block}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid transparent;border-radius:var(--r-1);padding:7px 16px;min-height:38px;cursor:pointer;font-weight:500;background:var(--em);color:#fff;transition:background .12s}
+.btn:hover{background:var(--deep)}
+.btn.sec{background:#fff;color:var(--em);border-color:var(--line-strong)}
+.btn.sec:hover{background:var(--hover)}
+.btn.quiet{background:transparent;color:var(--em);padding-inline:8px}
+.btn.quiet:hover{background:var(--hover)}
+.btn.brass{background:var(--brass-lt);color:var(--deep)}
+.btn.brass:hover{background:#D4B26A}
+.btn.danger{background:var(--bad)}
+.btn.sm{min-height:32px;padding:3px 12px;font-size:14px}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+kbd{font-family:var(--font-lat);font-size:12px;border:1px solid var(--line-2);border-bottom-width:2px;border-radius:4px;padding:0 6px;background:#fff;color:var(--ink2);direction:ltr;display:inline-block}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:13px;line-height:1.5;padding:1px 10px;border-radius:999px;font-weight:500;white-space:nowrap}
+.badge::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.b-ok{background:var(--ok-bg);color:var(--ok)}.b-bad{background:var(--bad-bg);color:var(--bad)}
+.b-warn{background:var(--warn-bg);color:var(--warn)}.b-teal{background:var(--teal-bg);color:var(--teal)}
+.b-brass{background:var(--brass-bg);color:var(--brass-bg-ink)}.b-neutral{background:#E9ECE4;color:var(--ink2)}
+.rule-brass{height:2px;background:linear-gradient(90deg,var(--brass) 0 56px,var(--line) 56px);border:0;margin:0}
+h1,h2,h3{margin:0;line-height:1.35;font-weight:600;color:var(--em)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.field{display:grid;gap:4px}
+.field label{font-weight:500;font-size:14px;color:var(--ink2)}
+.input,.select{border:1px solid var(--line-strong);background:#fff;border-radius:var(--r-1);padding:7px 12px;min-height:40px;width:100%}
+.input:focus,.select:focus{outline:2px solid var(--teal);outline-offset:0;border-color:var(--teal)}
+.input.err{border-color:var(--bad);background:#FFFAF9}
+.err-msg{color:var(--bad);font-size:13.5px;display:flex;gap:6px;align-items:flex-start}
+.help{color:var(--ink3);font-size:13.5px}
+
+/* ============ LOGIN ============ */
+.login{min-height:calc(100vh - 49px);display:grid;grid-template-columns:1.05fr 1fr}
+.login .brand{background:var(--deep);color:var(--side-ink);display:grid;place-items:center;padding:48px;position:relative;overflow:hidden}
+.login .brand::after{content:"";position:absolute;inset-inline:0;bottom:0;height:6px;background:var(--brass)}
+.arch-big{width:min(380px,70%);aspect-ratio:3/4;border:2px solid rgba(232,223,200,.55);border-radius:999px 999px 0 0;display:grid;place-items:center;text-align:center;padding:32px 28px;position:relative}
+.arch-big::before{content:"";position:absolute;inset:10px;border:1px solid rgba(201,165,91,.5);border-radius:999px 999px 0 0;pointer-events:none}
+.arch-big .verse{font-family:var(--font-quran);font-size:30px;line-height:2;color:#F4EBD3}
+.arch-big .src{font-size:13.5px;color:var(--side-ink-2);margin-top:6px}
+.arch-big svg.mk{width:64px;height:64px;margin-bottom:12px;--mark-a:#E8DFC8;--mark-b:#C9A55B}
+.login .form{display:grid;place-items:center;padding:32px}
+.login .box{width:min(380px,100%);display:grid;gap:16px}
+.login h1{font-size:28px}
+.login .sub{color:var(--ink2);margin-top:-8px}
+.reassure{display:flex;gap:8px;align-items:center;color:var(--ink2);font-size:14px;border-top:1px solid var(--line);padding-top:12px}
+
+/* ============ APP SHELL ============ */
+.app{display:grid;grid-template-columns:248px 1fr;min-height:calc(100vh - 49px);min-width:1100px}
+.side{background:var(--side);color:var(--side-ink);display:flex;flex-direction:column;position:sticky;top:49px;height:calc(100vh - 49px)}
+.brandrow{display:flex;gap:12px;align-items:center;padding:20px 20px 14px}
+.brandrow svg.mk{width:40px;height:40px;--mark-a:#E8DFC8;--mark-b:#C9A55B}
+.brandrow .wm{font-weight:700;font-size:22px;color:#F4EBD3;line-height:1.1}
+.brandrow .wl{font-family:var(--font-lat);font-size:11.5px;letter-spacing:.22em;color:var(--side-ink-2)}
+.assoc{margin:4px 14px 12px;padding:10px 12px;border:1px solid rgba(207,227,218,.22);border-radius:var(--r-2);font-size:14px}
+.assoc b{display:block;color:#F4EBD3;font-weight:600}
+.scope{display:flex;gap:4px;margin-top:8px}
+.scope button{flex:1;background:transparent;border:1px solid rgba(207,227,218,.28);color:var(--side-ink);border-radius:var(--r-1);padding:2px 4px;font-size:13px;cursor:pointer}
+.scope button[aria-pressed="true"]{background:var(--brass-lt);color:var(--deep);border-color:var(--brass-lt);font-weight:600}
+.scope button[disabled]{opacity:.4;cursor:not-allowed}
+.nav{padding:4px 0;display:grid;gap:1px;overflow:auto}
+.nav a{display:flex;gap:12px;align-items:center;padding:9px 20px;color:var(--side-ink);text-decoration:none;border-inline-end:3px solid transparent;cursor:pointer}
+.nav a:hover{background:rgba(255,255,255,.06)}
+.nav a[aria-current="page"]{background:rgba(255,255,255,.09);border-inline-end-color:var(--brass-lt);color:#fff;font-weight:600}
+.nav .sep{height:1px;background:rgba(207,227,218,.16);margin:8px 20px}
+.nav .grp{font-size:13px;color:var(--side-ink-2);padding:6px 20px 2px}
+.who{margin-top:auto;border-top:1px solid rgba(207,227,218,.16);padding:12px 16px;font-size:13.5px}
+.who select{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(207,227,218,.28);color:#fff;border-radius:var(--r-1);padding:4px 8px;margin-top:6px}
+.who select option{color:#000}
+.main{min-width:0}
+.top{height:56px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:16px;padding:0 32px;position:sticky;top:49px;z-index:20}
+.search{display:flex;align-items:center;gap:8px;border:1px solid var(--line-strong);border-radius:var(--r-1);padding:0 12px;min-height:36px;min-width:340px;background:var(--ivory);color:var(--ink3)}
+.search input{border:0;background:transparent;outline:0;flex:1;min-width:0;color:var(--ink)}
+.search:focus-within{outline:2px solid var(--teal)}
+.top .status{display:flex;gap:16px;margin-inline-start:auto;align-items:center;font-size:14px;color:var(--ink2)}
+.top .status span{display:inline-flex;gap:6px;align-items:center}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.dot.ok{background:var(--ok)}.dot.warn{background:#B45309}
+.content{padding:28px 32px 56px}
+.pagehead{display:flex;align-items:flex-end;gap:16px;margin-bottom:6px}
+.pagehead h1{font-size:26px}
+.pagehead .date{color:var(--ink2);font-size:15px;margin-top:2px}
+.pagehead .acts{margin-inline-start:auto;display:flex;gap:8px}
+.view{display:none}.view.on{display:block}
+
+/* ============ HOME ============ */
+.home-grid{display:grid;grid-template-columns:1fr 340px;gap:40px;margin-top:20px}
+.sect{margin-bottom:28px}
+.sect>h2{font-size:17px;display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.sect>h2 small{font-weight:400;color:var(--ink3);font-size:14px}
+.attn{border-top:1px solid var(--line)}
+.attn li{list-style:none;display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.attn{margin:0;padding:0}
+.attn .t{flex:1}.attn .t b{font-weight:600}
+.attn .ic{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;flex:none}
+.ic.warn{background:var(--warn-bg);color:var(--warn)}.ic.ok{background:var(--ok-bg);color:var(--ok)}.ic.teal{background:var(--teal-bg);color:var(--teal)}
+table.grid{width:100%;border-collapse:collapse;background:#fff;font-size:14.5px}
+table.grid thead th{position:sticky;top:105px;background:#EEF1EA;text-align:start;font-weight:600;color:var(--ink2);padding:10px 14px;border-bottom:2px solid var(--brass);font-size:14px;white-space:nowrap;z-index:5}
+table.grid td{padding:9px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+table.grid tbody tr:nth-child(even) td{background:var(--zebra)}
+table.grid tbody tr:hover td{background:var(--hover)}
+table.grid tr.sel td{background:#E3EEE8!important}
+.tbl-wrap{border:1px solid var(--line);border-radius:var(--r-2);overflow:clip;background:#fff}
+.mini{display:inline-flex;align-items:center;gap:8px}
+.mini i{display:inline-block;width:56px;height:6px;background:#E3E7DC;border-radius:3px;overflow:hidden}
+.mini i b{display:block;height:100%;background:var(--teal)}
+.aside{border-inline-start:1px solid var(--line);padding-inline-start:28px}
+.stat{padding:12px 0;border-bottom:1px solid var(--line)}
+.stat:first-of-type{border-top:1px solid var(--line)}
+.stat .k{font-weight:600;display:flex;gap:8px;align-items:center}
+.stat .v{color:var(--ink2);font-size:14.5px;margin:2px 0 8px}
+.ablist{margin:0;padding:0;list-style:none}
+.ablist li{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px dashed var(--line-2);font-size:14.5px}
+
+/* ============ STUDENTS ============ */
+.filters{display:flex;gap:12px;align-items:center;margin:16px 0 14px;flex-wrap:wrap}
+.chip{border:1px solid var(--line-strong);background:#fff;border-radius:999px;padding:3px 14px;font-size:14px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--em);color:#fff;border-color:var(--em)}
+.chip[disabled]{opacity:.45;cursor:not-allowed}
+.foot{display:flex;align-items:center;gap:16px;padding:10px 14px;background:#fff;border:1px solid var(--line);border-top:0;border-radius:0 0 var(--r-2) var(--r-2);font-size:14px;color:var(--ink2)}
+.foot .pg{margin-inline-start:auto;display:flex;gap:4px}
+.pg button{min-width:34px;height:34px;border:1px solid var(--line-2);background:#fff;border-radius:var(--r-1);cursor:pointer}
+.pg button[aria-current="true"]{background:var(--em);color:#fff;border-color:var(--em)}
+.nm{font-weight:600;color:var(--em);text-decoration:none;cursor:pointer}
+.nm:hover{text-decoration:underline}
+.cb{width:18px;height:18px;accent-color:var(--em)}
+
+/* ============ ATTENDANCE ============ */
+.sesshead{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;border-bottom:1px solid var(--line);padding-bottom:16px;margin-top:8px}
+.sesshead .meta{display:flex;gap:28px;color:var(--ink2);flex-wrap:wrap;margin-top:6px}
+.sesshead .meta div span{display:block;font-size:13px;color:var(--ink3)}
+.banner{display:flex;gap:12px;align-items:center;padding:10px 14px;border-radius:var(--r-2);margin:16px 0;border:1px solid}
+.banner.warn{background:var(--warn-bg);border-color:#E7C99A;color:#5E2A06}
+.banner.ok{background:var(--ok-bg);border-color:#B8D9C4;color:#0F4A27}
+.banner.info{background:var(--teal-bg);border-color:#A8D3CE;color:#0B4F49}
+.banner.bad{background:var(--bad-bg);border-color:#EFB4AD;color:#7A1A12}
+.roster{background:#fff;border:1px solid var(--line);border-radius:var(--r-2) var(--r-2) 0 0;overflow:clip}
+.rrow{display:grid;grid-template-columns:44px 1fr 320px 220px;align-items:center;gap:12px;padding:6px 16px;border-bottom:1px solid var(--line);min-height:52px}
+.rrow:nth-child(even){background:var(--zebra)}
+.rrow.head{background:#EEF1EA;font-weight:600;font-size:14px;color:var(--ink2);border-bottom:2px solid var(--brass);min-height:44px}
+.rrow[tabindex]:focus-visible{outline:2px solid var(--teal);outline-offset:-2px}
+.rrow .no{color:var(--ink3);text-align:center}
+.seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:var(--r-1);overflow:hidden;background:#fff}
+.seg button{border:0;border-inline-start:1px solid var(--line-2);background:#fff;padding:5px 14px;min-height:36px;cursor:pointer;font-size:14px;display:flex;gap:6px;align-items:center}
+.seg button:first-child{border-inline-start:0}
+.seg button[aria-pressed="true"][data-v="present"]{background:var(--ok);color:#fff}
+.seg button[aria-pressed="true"][data-v="late"]{background:#8A5A00;color:#fff}
+.seg button[aria-pressed="true"][data-v="absent"]{background:var(--bad);color:#fff}
+.seg button[aria-pressed="true"][data-v="excused"]{background:var(--teal);color:#fff}
+.stickybar{position:sticky;bottom:0;background:#fff;border:1px solid var(--line);border-top:2px solid var(--brass);padding:12px 16px;display:flex;gap:20px;align-items:center;margin-top:-1px;border-radius:0 0 var(--r-2) var(--r-2);box-shadow:0 -6px 12px rgba(0,53,39,.05)}
+.counts{display:flex;gap:18px;font-size:14.5px}
+.counts span b{font-family:var(--font-lat);font-size:18px;margin-inline-end:4px}
+.toast{position:fixed;inset-inline-start:24px;bottom:24px;background:var(--deep);color:#fff;padding:12px 18px;border-radius:var(--r-2);box-shadow:var(--shadow-pop);display:none;gap:10px;align-items:center;z-index:99}
+.toast.on{display:flex}
+
+/* ============ PROFILE ============ */
+.prof-head{display:flex;gap:20px;align-items:center;margin-top:8px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.avatar{width:64px;height:64px;border-radius:999px 999px 6px 6px;background:var(--em);color:#F4EBD3;display:grid;place-items:center;font-size:26px;font-weight:600;flex:none}
+.prof-grid{display:grid;grid-template-columns:1fr 360px;gap:40px;margin-top:20px}
+.big{display:flex;gap:32px;align-items:flex-end;margin:4px 0 12px;flex-wrap:wrap}
+.big div b{font-family:var(--font-lat);font-size:40px;font-weight:500;color:var(--em);line-height:1;display:block;direction:ltr;text-align:start}
+.big div span{color:var(--ink2);font-size:14px}
+.smap{display:grid;grid-template-columns:repeat(19,1fr);gap:3px;direction:rtl}
+.smap i{aspect-ratio:1;border-radius:2px;background:#E3E7DC;position:relative;cursor:default;display:block}
+.smap i[data-l="1"]{background:#BFD9CF}.smap i[data-l="2"]{background:#7FB5A5}.smap i[data-l="3"]{background:#2F8A76}.smap i[data-l="4"]{background:var(--em)}
+.legend{display:flex;gap:6px;align-items:center;color:var(--ink3);font-size:13px;margin-top:8px}
+.legend i{width:14px;height:14px;border-radius:2px;display:inline-block}
+.recent td.rng{font-family:var(--font-ar)}
+.form-panel{border:1px solid var(--line);background:#fff;border-radius:var(--r-2);padding:18px;display:grid;gap:14px;border-top:2px solid var(--brass)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{display:flex;gap:8px;flex-wrap:wrap}
+.opt button{flex:1;border:1px solid var(--line-strong);background:#fff;border-radius:var(--r-1);padding:6px 8px;min-height:38px;cursor:pointer;font-size:14px}
+.opt button[aria-pressed="true"]{background:var(--em);color:#fff;border-color:var(--em)}
+
+/* ============ PORTAL (phone) ============ */
+.stage-portal{display:flex;justify-content:center;gap:48px;padding:32px;flex-wrap:wrap;align-items:flex-start}
+.phone{width:390px;min-height:780px;background:#fff;border:10px solid #1B2A24;border-radius:36px;overflow:hidden;box-shadow:0 20px 50px rgba(0,53,39,.22);display:flex;flex-direction:column}
+.p-head{background:var(--deep);color:var(--side-ink);padding:20px 20px 0;position:relative}
+.p-head .row{display:flex;align-items:center;gap:10px}
+.p-head svg.mk{width:30px;height:30px;--mark-a:#E8DFC8;--mark-b:#C9A55B}
+.p-head b{color:#F4EBD3;font-size:17px}
+.p-head small{display:block;color:var(--side-ink-2);font-size:12.5px}
+.kids{display:flex;gap:6px;margin-top:16px}
+.kids button{flex:1;border:0;background:rgba(255,255,255,.08);color:var(--side-ink);padding:10px 8px 8px;border-radius:999px 999px 0 0;cursor:pointer;font-size:14.5px;min-height:44px}
+.kids button[aria-pressed="true"]{background:#fff;color:var(--em);font-weight:600}
+.p-body{padding:18px 20px 28px;display:grid;gap:22px}
+.p-body h2{font-size:16px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:baseline}
+.p-body h2 small{font-weight:400;color:var(--ink3);font-size:13px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal span{aspect-ratio:1;border-radius:6px;display:grid;place-items:center;font-size:12.5px;font-family:var(--font-lat);position:relative;background:#EEF1EA;color:var(--ink3)}
+.cal .p{background:var(--ok-bg);color:var(--ok)}.cal .a{background:var(--bad-bg);color:var(--bad);font-weight:700}
+.cal .l{background:var(--warn-bg);color:var(--warn)}.cal .e{background:var(--teal-bg);color:var(--teal)}
+.cal .a::after{content:"";position:absolute;inset-inline-end:3px;top:3px;width:5px;height:5px;border-radius:50%;background:var(--bad)}
+.cal .l::after{content:"";position:absolute;inset-inline-end:3px;top:3px;width:0;height:0;border-inline:3px solid transparent;border-bottom:6px solid var(--warn)}
+.cal .p::after{content:"";position:absolute;inset-inline-end:3px;top:3px;width:5px;height:5px;background:var(--ok)}
+.cal .e::after{content:"";position:absolute;inset-inline-end:3px;top:3px;width:5px;height:5px;background:var(--teal);transform:rotate(45deg)}
+.legend2{display:flex;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--ink2);margin-top:8px}
+.ann{border-inline-start:3px solid var(--brass);padding:4px 12px;background:var(--brass-bg);color:#3F2F0F;border-radius:0 var(--r-1) var(--r-1) 0}
+.fresh{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--ink3);border-top:1px solid var(--line);padding-top:12px}
+.recent-list{margin:0;padding:0;list-style:none}
+.recent-list li{display:flex;justify-content:space-between;gap:8px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+
+/* ============ DESIGN SYSTEM SHEET ============ */
+.sheet{max-width:1180px;margin:0 auto;padding:32px 32px 80px}
+.sheet h2{font-size:20px;margin:40px 0 12px;display:flex;gap:12px;align-items:baseline}
+.sheet h2 small{font-weight:400;color:var(--ink3);font-size:14px}
+.sw{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.sw div{border:1px solid var(--line);border-radius:var(--r-2);overflow:hidden;background:#fff;font-size:13.5px}
+.sw i{display:block;height:64px}
+.sw p{margin:0;padding:8px 10px}
+.sw b{display:block;font-weight:600}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.demo{border:1px solid var(--line);background:#fff;border-radius:var(--r-2);padding:18px;display:grid;gap:12px;align-content:start}
+.demo h3{font-size:14px;color:var(--ink3);font-weight:500}
+.skl{height:14px;border-radius:4px;background:linear-gradient(90deg,#E6E9DF 25%,#F1F3EB 50%,#E6E9DF 75%);background-size:200% 100%;animation:sk 1.4s infinite}
+@keyframes sk{to{background-position:-200% 0}}
+.empty{display:grid;justify-items:center;text-align:center;gap:6px;padding:12px}
+.empty .nic{width:64px;height:80px;border:2px solid var(--line-strong);border-radius:999px 999px 0 0;display:grid;place-items:center;color:var(--teal)}
+.type-row{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--line)}
+.type-row span{color:var(--ink3);font-size:13px}
+.logos{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.logos>div{border:1px solid var(--line);border-radius:var(--r-2);padding:28px;display:grid;place-items:center;gap:10px;text-align:center}
+.lockup{display:flex;align-items:center;gap:14px}
+.lockup svg.mk{width:56px;height:56px}
+.lockup .wm{font-weight:700;font-size:34px;line-height:1.1}
+.lockup .wl{font-family:var(--font-lat);letter-spacing:.24em;font-size:12px}
+.ll-light{background:#fff;--mark-a:#064E3B;--mark-b:#B48E43}.ll-light .wm{color:var(--em)}.ll-light .wl{color:var(--ink3)}
+.ll-dark{background:var(--deep);--mark-a:#E8DFC8;--mark-b:#C9A55B}.ll-dark .wm{color:#F4EBD3}.ll-dark .wl{color:var(--side-ink-2)}
+.ll-brass{background:var(--brass-lt);--mark-a:#003527;--mark-b:#FFFFFF}.ll-brass .wm{color:var(--deep)}.ll-brass .wl{color:var(--deep)}
+.cr{font-family:var(--font-lat);direction:ltr;display:inline-block}
+.pass{color:var(--ok);font-weight:600}.fail{color:var(--bad);font-weight:600}
+@media (max-width:900px){.login{grid-template-columns:1fr}.login .brand{display:none}.sw,.three,.two,.logos{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="mark" viewBox="0 0 64 64">
+      <path fill="var(--mark-a,#064E3B)" fill-rule="evenodd" d="M10 60V27C10 13.2 20 4 32 4s22 9.2 22 23v33zM19 60V29c0-8 5.5-15 13-15s13 7 13 15v31z"/>
+      <path fill="var(--mark-b,#B48E43)" d="M32 24c3.6 4.4 5.6 7.4 5.6 10.6a5.6 5.6 0 0 1-11.2 0c0-3.2 2-6.2 5.6-10.6z"/>
+      <rect x="31" y="39" width="2" height="7" fill="var(--mark-a,#064E3B)"/>
+      <path fill="var(--mark-a,#064E3B)" d="M24.5 46h15c0 4.4-3.4 7.4-7.5 7.4s-7.5-3-7.5-7.4z"/>
+    </symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><circle cx="17" cy="9" r="2.4"/><path d="M16.5 14.6c2.7 0 4.5 1.8 4.5 4.4"/></symbol>
+    <symbol id="i-group" viewBox="0 0 24 24"><path d="M4 5h6a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4z"/><path d="M20 5h-6a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h6z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/><path d="M9 15l2 2 4-4"/></symbol>
+    <symbol id="i-quran" viewBox="0 0 24 24"><path d="M12 5c-2-1.5-5-1.8-8-1v14c3-.8 6-.5 8 1 2-1.5 5-1.8 8-1V4c-3-.8-6-.5-8 1z"/><path d="M12 5v14"/></symbol>
+    <symbol id="i-teacher" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/><path d="M9.5 20v-2.4M14.5 20v-2.4"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16M8 14h2M12 14h2M16 14h0M8 17h2M12 17h2"/></symbol>
+    <symbol id="i-report" viewBox="0 0 24 24"><path d="M5 20V4h10l4 4v12z"/><path d="M14 4v5h5"/><path d="M8 17v-3M12 17v-6M16 17v-4"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18a4 4 0 0 1-.6-7.9A5.5 5.5 0 0 1 17 9.5a4.2 4.2 0 0 1 .5 8.5z"/><path d="M12 17v-6M9.5 13.5L12 11l2.5 2.5"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.5-3 7.8-7 9.5-4-1.700-7-5-7-9.500V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.500M12 18.500V21M3 12h2.500M18.500 12H21M5.600 5.600l1.800 1.800M16.600 16.600l1.800 1.800M5.600 18.400l1.800-1.800M16.600 7.400l1.800-1.800"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.500"/><path d="M16 16l4.500 4.500"/></symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 4l9 16H3z"/><path d="M12 10v4.500M12 17.500v.1"/></symbol>
+    <symbol id="i-ok" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.500"/><path d="M8.500 12.200l2.400 2.400 4.600-4.800"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.500"/><path d="M12 11v5M12 8v.1"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.500" width="14" height="9.500" rx="2"/><path d="M8 10.500V8a4 4 0 0 1 8 0v2.500"/></symbol>
+    <symbol id="i-print" viewBox="0 0 24 24"><path d="M7 9V4h10v5"/><rect x="4" y="9" width="16" height="8" rx="2"/><path d="M7 14h10v6H7z"/></symbol>
+  </defs>
+</svg>
+
+<div class="protobar" role="navigation" aria-label="شاشات النموذج">
+  <b>مشكاة · نموذج تفاعلي</b>
+  <button data-go="login" aria-pressed="false">تسجيل الدخول</button>
+  <button data-go="home" aria-pressed="true">الرئيسية</button>
+  <button data-go="students" aria-pressed="false">الطلاب</button>
+  <button data-go="attendance" aria-pressed="false">تسجيل الحضور</button>
+  <button data-go="profile" aria-pressed="false">ملف الطالب</button>
+  <button data-go="portal" aria-pressed="false">البوابة (جوال)</button>
+  <button data-go="system" aria-pressed="false">نظام التصميم</button>
+  <span class="hint">بيانات وأسماء تجريبية · لا شيء هنا مخزَّن</span>
+</div>
+
+<!-- ================= LOGIN ================= -->
+<section class="screen" id="s-login">
+  <div class="login">
+    <div class="brand">
+      <div class="arch-big">
+        <div>
+          <svg class="mk" viewBox="0 0 64 64" aria-hidden="true"><use href="#mark"/></svg>
+          <div class="verse" lang="ar">كَمِشْكَاةٍ فِيهَا مِصْبَاحٌ</div>
+          <div class="src">سورة النور · الآية 35</div>
+        </div>
+      </div>
+    </div>
+    <div class="form">
+      <form class="box" onsubmit="event.preventDefault();go('home')">
+        <h1>مرحباً بكم في مشكاة</h1>
+        <p class="sub">سجّلوا الدخول لإدارة جمعية النور القرآنية.</p>
+        <div class="field"><label for="u">اسم المستخدم</label><input id="u" class="input" value="director" autocomplete="username"></div>
+        <div class="field"><label for="p">كلمة المرور</label><input id="p" type="password" class="input" value="••••••••••" autocomplete="current-password"></div>
+        <button class="btn" type="submit">دخول</button>
+        <a href="#" class="help" onclick="return false">نسيتم كلمة المرور؟ استخدموا مفتاح الاسترجاع</a>
+        <div class="reassure"><svg class="i"><use href="#i-lock"/></svg><span>يعمل البرنامج دون إنترنت. بياناتكم محفوظة على هذا الجهاز.</span></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ================= APP SHELL ================= -->
+<section class="screen on" id="s-app">
+  <div class="app">
+    <aside class="side">
+      <div class="brandrow">
+        <svg class="mk" viewBox="0 0 64 64" aria-hidden="true"><use href="#mark"/></svg>
+        <div><div class="wm">مشكاة</div><div class="wl">MISHKAT</div></div>
+      </div>
+      <div class="assoc">
+        <b>جمعية النور القرآنية</b>
+        <span class="help" style="color:var(--side-ink-2)">العام الدراسي 2026 / 2027</span>
+        <div class="scope" role="group" aria-label="نطاق الفرع">
+          <button data-scope="all" aria-pressed="true">الفرعان</button>
+          <button data-scope="men" aria-pressed="false">الرجال</button>
+          <button data-scope="women" aria-pressed="false">النساء</button>
+        </div>
+      </div>
+      <nav class="nav" aria-label="القائمة الرئيسية">
+        <a data-view="home" aria-current="page"><svg class="i"><use href="#i-home"/></svg>الرئيسية</a>
+        <a data-view="students"><svg class="i"><use href="#i-users"/></svg>الطلاب</a>
+        <a data-view="students" data-stub><svg class="i"><use href="#i-group"/></svg>الحلقات</a>
+        <a data-view="attendance"><svg class="i"><use href="#i-check"/></svg>الحضور</a>
+        <a data-view="profile"><svg class="i"><use href="#i-quran"/></svg>الحفظ والمتابعة</a>
+        <a data-view="home" data-stub><svg class="i"><use href="#i-teacher"/></svg>المعلمون</a>
+        <a data-view="home" data-stub><svg class="i"><use href="#i-cal"/></svg>الجدول</a>
+        <a data-view="home" data-stub><svg class="i"><use href="#i-report"/></svg>التقارير</a>
+        <div class="sep"></div>
+        <a data-view="home" data-stub><svg class="i"><use href="#i-cloud"/></svg>النشر للبوابة</a>
+        <a data-view="home" data-stub><svg class="i"><use href="#i-shield"/></svg>النسخ الاحتياطي</a>
+        <a data-view="home" data-stub><svg class="i"><use href="#i-gear"/></svg>الإعدادات</a>
+      </nav>
+      <div class="who">
+        <div id="whoName">المدير · أ. عبد القادر</div>
+        <label class="sr" for="roleSel">الدور (تجربة)</label>
+        <select id="roleSel"><option value="director">المدير — يرى الفرعين</option><option value="men">مشرف فرع الرجال</option><option value="women">مشرفة فرع النساء</option></select>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="top">
+        <label class="search"><svg class="i"><use href="#i-search"/></svg><input type="search" placeholder="ابحث عن طالب أو ولي أمر أو حلقة" aria-label="بحث"><kbd>Ctrl</kbd><kbd>K</kbd></label>
+        <div class="status" aria-label="حالة النظام">
+          <span><i class="dot ok"></i>نسخة احتياطية موثّقة</span>
+          <span><i class="dot warn"></i>12 تغييراً لم يُنشر</span>
+        </div>
+      </header>
+
+      <div class="content">
+        <!-- ---------- HOME ---------- -->
+        <div class="view on" id="v-home">
+          <div class="pagehead">
+            <div><h1>اليوم</h1><div class="date">الأحد 22 نوفمبر 2026 · 12 جمادى الآخرة 1448 هـ</div></div>
+            <div class="acts"><button class="btn sec"><svg class="i"><use href="#i-print"/></svg>كشف الحضور الورقي</button><button class="btn" id="pubBtn"><svg class="i"><use href="#i-cloud"/></svg>نشر الآن</button></div>
+          </div>
+          <hr class="rule-brass" style="margin-top:14px">
+
+          <div class="home-grid">
+            <div>
+              <div class="sect">
+                <h2>يحتاج إجراءً <small id="attnCount">3 بنود</small></h2>
+                <ul class="attn">
+                  <li><span class="ic warn"><svg class="i"><use href="#i-warn"/></svg></span><span class="t"><b id="pendTxt">3 حصص</b> لم يُؤكَّد حضورها بعد اليوم</span><button class="btn sm sec" data-go="attendance">تأكيد الحضور</button></li>
+                  <li><span class="ic teal"><svg class="i"><use href="#i-info"/></svg></span><span class="t"><b>طالبان</b> تغيّبا ثلاث حصص متتالية</span><button class="btn sm sec">عرض القائمة</button></li>
+                  <li><span class="ic ok"><svg class="i"><use href="#i-ok"/></svg></span><span class="t">آخر نسخة احتياطية <b>موثّقة</b> أمس 21:10</span><button class="btn sm quiet">نسخ الآن</button></li>
+                </ul>
+              </div>
+
+              <div class="sect">
+                <h2>حصص اليوم <small id="sessCount">6 حصص</small></h2>
+                <div class="tbl-wrap">
+                  <table class="grid" id="sessTbl">
+                    <thead><tr><th>الوقت</th><th>الحلقة</th><th>الفرع</th><th>المعلم</th><th>الحضور</th><th></th></tr></thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <aside class="aside" aria-label="حالة النظام">
+              <div class="sect">
+                <h2>حالة النظام</h2>
+                <div class="stat"><div class="k"><svg class="i"><use href="#i-shield"/></svg>النسخ الاحتياطي</div><div class="v">آخر نسخة موثّقة: أمس <span class="num">21:10</span> · الحجم <span class="num">4.2 MB</span><br>الوجهة: قرص خارجي (USB)</div><button class="btn sm sec">نسخ احتياطي الآن</button></div>
+                <div class="stat"><div class="k"><svg class="i"><use href="#i-cloud"/></svg>بوابة أولياء الأمور</div><div class="v">12 تغييراً بانتظار النشر · آخر نشر الجمعة 18:42</div><button class="btn sm sec">معاينة ما سيُنشر</button></div>
+                <div class="stat"><div class="k"><svg class="i"><use href="#i-lock"/></svg>الترخيص</div><div class="v">ترخيص تجريبي للجمعية. بياناتكم متاحة دائماً حتى لو انتهى الترخيص.</div></div>
+              </div>
+              <div class="sect">
+                <h2>متابعة الغياب <small>آخر 14 يوماً</small></h2>
+                <ul class="ablist" id="abList"></ul>
+              </div>
+            </aside>
+          </div>
+        </div>
+
+        <!-- ---------- STUDENTS ---------- -->
+        <div class="view" id="v-students">
+          <div class="pagehead">
+            <div><h1>الطلاب</h1><div class="date" id="stuCount">214 طالباً</div></div>
+            <div class="acts"><button class="btn sec">استيراد من Excel</button><button class="btn">+ تسجيل طالب</button></div>
+          </div>
+          <div class="filters">
+            <label class="search" style="min-width:300px"><svg class="i"><use href="#i-search"/></svg><input id="stuQ" type="search" placeholder="اسم الطالب أو رقمه" aria-label="بحث في الطلاب"></label>
+            <span class="help">الفرع:</span>
+            <button class="chip" data-f="all" aria-pressed="true">الكل</button>
+            <button class="chip" data-f="men" aria-pressed="false">الرجال</button>
+            <button class="chip" data-f="women" aria-pressed="false">النساء</button>
+            <span class="help" style="margin-inline-start:12px">الحالة:</span>
+            <select class="select" id="stuStatus" style="width:150px;min-height:34px;padding:2px 10px" aria-label="الحالة"><option value="">كل الحالات</option><option>نشط</option><option>موقوف</option><option>منتظر</option></select>
+          </div>
+          <div class="tbl-wrap" style="border-radius:var(--r-2) var(--r-2) 0 0">
+            <table class="grid" id="stuTbl">
+              <thead><tr><th style="width:36px"><input class="cb" type="checkbox" aria-label="تحديد الكل"></th><th>الرقم</th><th>الاسم ↓</th><th>الحلقة</th><th>الفرع</th><th>الحالة</th><th>الحضور (30 يوماً)</th><th>آخر تسجيل حفظ</th><th>ولي الأمر</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="foot"><span id="stuFoot">عرض 1–16 من 214</span><span class="help">تلميح: <kbd>↑</kbd><kbd>↓</kbd> للتنقل · <kbd>Enter</kbd> لفتح الملف</span>
+            <div class="pg" aria-label="الصفحات"><button aria-label="السابق">›</button><button aria-current="true">1</button><button>2</button><button>3</button><button>…</button><button>14</button><button aria-label="التالي">‹</button></div></div>
+        </div>
+
+        <!-- ---------- ATTENDANCE ---------- -->
+        <div class="view" id="v-attendance">
+          <div class="pagehead"><div><h1>تسجيل الحضور</h1></div><div class="acts"><button class="btn sec" data-go="home">العودة لحصص اليوم</button></div></div>
+          <div class="sesshead">
+            <div>
+              <h2 style="font-size:22px">حلقة الفتح</h2>
+              <div class="meta"><div><span>التاريخ</span>الأحد 22 نوفمبر 2026</div><div><span>الوقت</span><b class="num">16:30</b> – <b class="num">18:00</b></div><div><span>المعلم</span>أ. محمد الأمين</div><div><span>الفرع</span>فرع الرجال</div></div>
+            </div>
+            <div class="counts" aria-live="polite"><span><b id="cP">0</b>حاضر</span><span><b id="cL">0</b>متأخر</span><span><b id="cA">0</b>غائب</span><span><b id="cE">0</b>بعذر</span></div>
+          </div>
+          <div class="banner warn" id="attBanner"><svg class="i"><use href="#i-warn"/></svg><span><b>لم يُؤكَّد الحضور بعد.</b> الحالات المعبّأة مسبقاً "حاضر" للتسريع، ولا تُحسب مسجَّلة حتى تؤكدوا.</span></div>
+          <div class="roster" id="roster" role="list">
+            <div class="rrow head"><span class="no">#</span><span>الطالب</span><span>الحالة</span><span>ملاحظة</span></div>
+          </div>
+          <div class="stickybar">
+            <span class="help">اختصارات: <kbd>↑</kbd><kbd>↓</kbd> تنقل · <kbd>1</kbd> حاضر · <kbd>2</kbd> متأخر · <kbd>3</kbd> غائب · <kbd>4</kbd> بعذر</span>
+            <span style="margin-inline-start:auto" class="help"><kbd>Ctrl</kbd>+<kbd>Enter</kbd></span>
+            <button class="btn" id="confirmBtn">تأكيد الحضور</button>
+          </div>
+        </div>
+
+        <!-- ---------- PROFILE ---------- -->
+        <div class="view" id="v-profile">
+          <div class="prof-head">
+            <div class="avatar" aria-hidden="true">ي</div>
+            <div>
+              <h1 style="font-size:26px">يوسف بلقاسم</h1>
+              <div style="display:flex;gap:10px;align-items:center;margin-top:4px;flex-wrap:wrap"><span class="badge b-ok">نشط</span><span class="help">رقم <span class="num">0412</span> · حلقة الفتح · فرع الرجال · ولي الأمر: بلقاسم محمد</span></div>
+            </div>
+            <div class="acts" style="margin-inline-start:auto;display:flex;gap:8px"><button class="btn sec"><svg class="i"><use href="#i-print"/></svg>طباعة التقرير</button><button class="btn sec">نقل إلى حلقة أخرى</button></div>
+          </div>
+
+          <div class="prof-grid">
+            <div>
+              <div class="sect" style="margin-top:4px">
+                <h2>المحفوظ <small>يُحسب من الحفظ الجديد المقبول فقط. المراجعة لا تزيد الرصيد.</small></h2>
+                <div class="big">
+                  <div><b>664</b><span>آية محفوظة</span></div>
+                  <div><b>41</b><span>سورة بدأها أو أتمّها</span></div>
+                  <div><b>93%</b><span>حضور آخر 30 يوماً</span></div>
+                </div>
+                <div class="smap" id="smap" role="img" aria-label="خريطة السور: كلما كان اللون أغمق كان المحفوظ من السورة أكثر"></div>
+                <div class="legend"><span>أقل</span><i style="background:#E3E7DC"></i><i style="background:#BFD9CF"></i><i style="background:#7FB5A5"></i><i style="background:#2F8A76"></i><i style="background:var(--em)"></i><span>أكثر · مرّروا المؤشر على أي مربع لاسم السورة</span></div>
+              </div>
+
+              <div class="sect">
+                <h2>آخر التسجيلات</h2>
+                <div class="tbl-wrap recent">
+                  <table class="grid">
+                    <thead><tr><th>التاريخ</th><th>النوع</th><th>المدى</th><th>التقييم</th><th>المسجِّل</th></tr></thead>
+                    <tbody>
+                      <tr><td><span class="num">22/11</span></td><td><span class="badge b-teal">حفظ جديد</span></td><td class="rng">الملك: 1 – 15</td><td>ممتاز</td><td>أ. محمد الأمين</td></tr>
+                      <tr><td><span class="num">19/11</span></td><td><span class="badge b-brass">مراجعة</span></td><td class="rng">النبأ ← النازعات</td><td>جيد جداً</td><td>أ. محمد الأمين</td></tr>
+                      <tr><td><span class="num">17/11</span></td><td><span class="badge b-teal">حفظ جديد</span></td><td class="rng">القلم: 40 – 52</td><td>جيد</td><td>أ. محمد الأمين</td></tr>
+                      <tr><td><span class="num">15/11</span></td><td><span class="badge b-neutral">تثبيت</span></td><td class="rng">الملك كاملة</td><td>جيد جداً</td><td>أ. محمد الأمين</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <form class="form-panel" onsubmit="event.preventDefault();toast('تم حفظ التسجيل')">
+                <h2 style="font-size:17px">تسجيل جديد</h2>
+                <div class="field"><label>النوع</label>
+                  <div class="opt" role="group"><button type="button" aria-pressed="true">حفظ جديد</button><button type="button" aria-pressed="false">مراجعة</button><button type="button" aria-pressed="false">تثبيت</button></div></div>
+                <div class="row2">
+                  <div class="field"><label for="fs">من سورة</label><select id="fs" class="select"><option>الملك</option></select></div>
+                  <div class="field"><label for="fa">من آية</label><input id="fa" class="input num" value="16"></div>
+                </div>
+                <div class="row2">
+                  <div class="field"><label for="ts">إلى سورة</label><select id="ts" class="select"><option>الملك</option></select></div>
+                  <div class="field"><label for="ta">إلى آية</label><input id="ta" class="input num err" value="10" aria-invalid="true" aria-describedby="taErr"></div>
+                </div>
+                <div class="err-msg" id="taErr"><svg class="i" style="width:18px;height:18px"><use href="#i-warn"/></svg><span>نهاية المدى قبل بدايته. اختاروا آية أكبر من 16 أو تساويها.</span></div>
+                <div class="banner info" style="margin:0"><svg class="i"><use href="#i-info"/></svg><span>إذا تداخل المدى مع محفوظ سابق فسيُحسب المتداخل مرة واحدة.</span></div>
+                <div class="field"><label>التقييم</label>
+                  <div class="opt" role="group"><button type="button" aria-pressed="false">ممتاز</button><button type="button" aria-pressed="true">جيد جداً</button><button type="button" aria-pressed="false">جيد</button><button type="button" aria-pressed="false">يحتاج مراجعة</button></div></div>
+                <div class="field"><label for="cm">ملاحظة (اختيارية)</label><textarea id="cm" class="input" rows="2"></textarea><span class="help">لا تظهر لولي الأمر إلا إذا فعّلتم "ملاحظة قابلة للمشاركة".</span></div>
+                <button class="btn" type="submit">حفظ التسجيل</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PORTAL ================= -->
+<section class="screen" id="s-portal">
+  <div class="stage-portal">
+    <div class="phone" aria-label="بوابة ولي الأمر على الجوال">
+      <div class="p-head">
+        <div class="row"><svg class="mk" viewBox="0 0 64 64" aria-hidden="true"><use href="#mark"/></svg><div><b>جمعية النور القرآنية</b><small>بوابة أولياء الأمور</small></div></div>
+        <div class="kids" role="tablist" aria-label="الأبناء">
+          <button role="tab" aria-pressed="true" data-kid="0">يوسف</button>
+          <button role="tab" aria-pressed="false" data-kid="1">مريم</button>
+        </div>
+      </div>
+      <div class="p-body" id="kidBody"></div>
+    </div>
+
+    <div style="max-width:420px;display:grid;gap:14px;color:var(--ink2)">
+      <h2 style="font-size:20px">ما يراه ولي الأمر</h2>
+      <p>قراءة فقط. تصل البيانات من جهاز الجمعية بنشر أحادي الاتجاه، وتظهر دائماً عبارة "آخر تحديث".</p>
+      <ul style="padding-inline-start:18px;margin:0;display:grid;gap:6px">
+        <li>أبناؤه فقط، ولا يرى غيرهم أبداً.</li>
+        <li>الحالة تُعرَّف باللون والشكل معاً (ليس باللون وحده).</li>
+        <li>لا ملاحظات المعلمين إلا ما عُلّم "قابل للمشاركة".</li>
+        <li>لا وثائق ولا أرقام هوية ولا هواتف غيره.</li>
+      </ul>
+      <div class="banner info"><svg class="i"><use href="#i-info"/></svg><span>تصميم أولي. نص الاسم المعروض (الاسم الأول + حرف العائلة) يتبع القرار OD-005.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DESIGN SYSTEM SHEET ================= -->
+<section class="screen" id="s-system">
+  <div class="sheet">
+    <div style="display:flex;gap:20px;align-items:center;margin-bottom:8px">
+      <svg viewBox="0 0 64 64" width="72" height="72" aria-hidden="true" style="--mark-a:#064E3B;--mark-b:#B48E43"><use href="#mark"/></svg>
+      <div><h1 style="font-size:32px">نظام التصميم · مشكاة</h1><p style="margin:4px 0 0;color:var(--ink2)">السجلّ المضيء: دفتر مؤسسي هادئ، وتحته مصباح في محراب. المحراب هو الشكل الوحيد المنحني الكبير في النظام. بقية الواجهة جداول وخطوط رفيعة.</p></div>
+    </div>
+    <hr class="rule-brass">
+
+    <h2>الألوان <small>كل زوج نص/خلفية مُقاس بمعيار WCAG</small></h2>
+    <div class="sw" id="swatches"></div>
+    <div class="banner warn"><svg class="i"><use href="#i-warn"/></svg><span><b>قاعدة النحاسي:</b> النحاسي <span class="cr">#B48E43</span> للزخرفة والخطوط والأيقونات الكبيرة فقط (3.05:1 على الأبيض، 2.78:1 على العاجي). للنص على الخلفيات الفاتحة استخدموا <span class="cr">#8A6A2B</span> (4.59:1)، وعلى الداكنة <span class="cr">#C9A55B</span> (5.86:1 على الأخضر الداكن).</span></div>
+
+    <h2>الخطوط والمقاس</h2>
+    <div class="demo">
+      <div class="type-row"><span>عنوان الصفحة · 26 · 600</span><h1 style="font-size:26px">حلقة الفتح — يوم الأحد</h1></div>
+      <div class="type-row"><span>عنوان قسم · 17 · 600</span><h2 style="font-size:17px;margin:0">حصص اليوم</h2></div>
+      <div class="type-row"><span>نص أساسي · 15 · 400</span><span style="color:var(--ink);font-size:15px">سجّل المعلم أن الطالب أتمّ مراجعة جزء عمّ كاملاً.</span></div>
+      <div class="type-row"><span>الجداول · 14.5 (الأدنى 14)</span><span style="color:var(--ink);font-size:14.5px">يوسف بلقاسم · حلقة الفتح · نشط</span></div>
+      <div class="type-row"><span>مساعد · 13.5 (الأدنى 13)</span><span style="color:var(--ink3);font-size:13.5px">آخر تحديث: اليوم 18:42</span></div>
+      <div class="type-row"><span>الأرقام · IBM Plex Sans، متجانسة العرض</span><span class="num" style="font-size:20px;color:var(--ink)">0123456789 · 16:30 – 18:00</span></div>
+      <div class="type-row"><span>نص الآيات · Amiri Quran · 28</span><span style="font-family:var(--font-quran);font-size:28px;color:var(--ink);line-height:2">كَمِشْكَاةٍ فِيهَا مِصْبَاحٌ</span></div>
+    </div>
+
+    <h2>الأزرار والحقول والشارات</h2>
+    <div class="three">
+      <div class="demo"><h3>الأزرار</h3><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn">حفظ التغييرات</button><button class="btn sec">إلغاء</button><button class="btn quiet">عرض التفاصيل</button><button class="btn brass">نشر الآن</button><button class="btn danger">أرشفة الطالب</button><button class="btn" disabled>غير متاح</button></div><span class="help">فعل واضح في الزر، ويتكرر نفسه في الإشعار: "تأكيد الحضور" ← "تم تأكيد الحضور".</span></div>
+      <div class="demo"><h3>الحقول</h3>
+        <div class="field"><label>اسم الطالب</label><input class="input" value="يوسف بلقاسم"></div>
+        <div class="field"><label>رقم هاتف ولي الأمر</label><input class="input err num" value="0550 12" aria-invalid="true"><div class="err-msg"><svg class="i" style="width:18px;height:18px"><use href="#i-warn"/></svg><span>الرقم ناقص. أدخلوا 10 أرقام تبدأ بـ 05 أو 06 أو 07.</span></div></div>
+      </div>
+      <div class="demo"><h3>الشارات والتحكم الثلاثي</h3>
+        <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="badge b-ok">نشط</span><span class="badge b-warn">منتظر</span><span class="badge b-bad">موقوف</span><span class="badge b-teal">حفظ جديد</span><span class="badge b-brass">مراجعة</span><span class="badge b-neutral">مؤرشف</span></div>
+        <div class="seg" role="group"><button aria-pressed="true" data-v="present">حاضر</button><button aria-pressed="false" data-v="late">متأخر</button><button aria-pressed="false" data-v="absent">غائب</button><button aria-pressed="false" data-v="excused">بعذر</button></div>
+        <span class="help">الحالة تُعرَّف بالنص واللون معاً.</span></div>
+    </div>
+
+    <h2>الحالات <small>فارغة · تحميل · خطأ · غير متصل · نجاح</small></h2>
+    <div class="three">
+      <div class="demo"><h3>فارغة</h3><div class="empty"><div class="nic"><svg class="i" style="width:28px;height:28px"><use href="#i-users"/></svg></div><b>لا طلاب في هذه الحلقة بعد</b><span class="help">أضيفوا طالباً أو استوردوا قائمة من Excel.</span><div style="display:flex;gap:8px;margin-top:6px"><button class="btn sm">+ تسجيل طالب</button><button class="btn sm sec">استيراد من Excel</button></div></div></div>
+      <div class="demo"><h3>تحميل</h3><div class="skl" style="width:80%"></div><div class="skl"></div><div class="skl" style="width:60%"></div><div class="skl" style="width:90%"></div><span class="help">هياكل تحميل بدل الدوّارات، بلا حركة عند تفضيل تقليل الحركة.</span></div>
+      <div class="demo"><h3>خطأ</h3><div class="banner bad" style="margin:0"><svg class="i"><use href="#i-warn"/></svg><span><b>تعذّر إنشاء النسخة الاحتياطية.</b> القرص الخارجي غير موصول. وصّلوه ثم أعيدوا المحاولة. بياناتكم الحالية سليمة.</span></div><button class="btn sm sec" style="justify-self:start">إعادة المحاولة</button></div>
+      <div class="demo"><h3>غير متصل / قيد النشر</h3><div class="banner info" style="margin:0"><svg class="i"><use href="#i-info"/></svg><span>لا يوجد إنترنت. العمل مستمر، و<b>12 تغييراً</b> بانتظار النشر.</span></div><div class="banner warn" style="margin:0"><svg class="i"><use href="#i-warn"/></svg><span>جارٍ سحب بيانات طالب من البوابة… سيكتمل عند النشر التالي.</span></div></div>
+      <div class="demo"><h3>نجاح</h3><div class="banner ok" style="margin:0"><svg class="i"><use href="#i-ok"/></svg><span>تم تأكيد الحضور لحلقة الفتح: 14 حاضراً، 2 غائبان.</span></div></div>
+      <div class="demo"><h3>تأكيد عملية خطرة</h3><b>استعادة نسخة احتياطية؟</b><span class="help">ستحل محل البيانات الحالية. سنحفظ نسخة من الحالة الحالية أولاً. اكتبوا "استعادة" للمتابعة.</span><input class="input" placeholder="استعادة"><div style="display:flex;gap:8px"><button class="btn danger sm" disabled>استعادة</button><button class="btn sec sm">إلغاء</button></div></div>
+    </div>
+
+    <h2>الشعار <small>محراب (مِشكاة) بداخله مصباح</small></h2>
+    <div class="logos">
+      <div class="lockup ll-light" style="padding:28px;border:1px solid var(--line);border-radius:6px;justify-content:center"><svg class="mk" viewBox="0 0 64 64"><use href="#mark"/></svg><div><div class="wm">مشكاة</div><div class="wl">MISHKAT</div></div></div>
+      <div class="lockup ll-dark" style="padding:28px;border-radius:6px;justify-content:center"><svg class="mk" viewBox="0 0 64 64"><use href="#mark"/></svg><div><div class="wm">مشكاة</div><div class="wl">MISHKAT</div></div></div>
+      <div class="lockup ll-brass" style="padding:28px;border-radius:6px;justify-content:center"><svg class="mk" viewBox="0 0 64 64"><use href="#mark"/></svg><div><div class="wm">مشكاة</div><div class="wl">MISHKAT</div></div></div>
+    </div>
+    <div class="demo" style="margin-top:16px">
+      <div style="display:flex;gap:32px;align-items:flex-end;flex-wrap:wrap">
+        <div style="text-align:center"><svg viewBox="0 0 64 64" width="96" height="96" style="--mark-a:#064E3B;--mark-b:#B48E43"><use href="#mark"/></svg><div class="help">96</div></div>
+        <div style="text-align:center"><svg viewBox="0 0 64 64" width="48" height="48" style="--mark-a:#064E3B;--mark-b:#B48E43"><use href="#mark"/></svg><div class="help">48</div></div>
+        <div style="text-align:center"><svg viewBox="0 0 64 64" width="32" height="32" style="--mark-a:#064E3B;--mark-b:#B48E43"><use href="#mark"/></svg><div class="help">32</div></div>
+        <div style="text-align:center"><svg viewBox="0 0 64 64" width="20" height="20" style="--mark-a:#064E3B;--mark-b:#B48E43"><use href="#mark"/></svg><div class="help">20 (أدنى حجم)</div></div>
+        <p style="margin:0;max-width:520px;color:var(--ink2)">المحراب هو الإطار، والشعلة النحاسية هي الوحيدة الملوّنة. تُترك مساحة حول الشعار تساوي عرض الشعلة. لا يُدوَّر ولا يُظلَّل ولا يُلوَّن بغير ألوان الهوية. نسخة الخطوط النهائية للكلمة تُنتَج بعد اعتماد الخط.</p>
+      </div>
+    </div>
+
+    <h2>الاختصارات <small>لوحة المفاتيح أولاً على سطح المكتب</small></h2>
+    <div class="demo"><div class="two"><div style="display:grid;gap:8px"><span><kbd>Ctrl</kbd> + <kbd>K</kbd> بحث شامل</span><span><kbd>Ctrl</kbd> + <kbd>Enter</kbd> تأكيد الحضور / حفظ</span><span><kbd>Ctrl</kbd> + <kbd>L</kbd> قفل الشاشة</span></div><div style="display:grid;gap:8px"><span><kbd>1</kbd> حاضر · <kbd>2</kbd> متأخر · <kbd>3</kbd> غائب · <kbd>4</kbd> بعذر</span><span><kbd>↑</kbd> <kbd>↓</kbd> تنقل بين الصفوف</span><span><kbd>Esc</kbd> إغلاق النوافذ</span></div></div></div>
+  </div>
+</section>
+
+<div class="toast" id="toast" role="status"><svg class="i"><use href="#i-ok"/></svg><span id="toastTxt"></span></div>
+
+<script>
+/* ---------- helpers ---------- */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+function toast(t){$('#toastTxt').textContent=t;$('#toast').classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>$('#toast').classList.remove('on'),2600)}
+const appViews=['home','students','attendance','profile'];
+function go(name){
+  const isApp=appViews.includes(name);
+  $$('.screen').forEach(s=>s.classList.remove('on'));
+  $(isApp?'#s-app':'#s-'+name).classList.add('on');
+  if(isApp){$$('.view').forEach(v=>v.classList.remove('on'));$('#v-'+name).classList.add('on');
+    $$('.nav a').forEach(a=>{a.removeAttribute('aria-current')});
+    const a=$$('.nav a').find(a=>a.dataset.view===name&&!a.hasAttribute('data-stub'));a&&a.setAttribute('aria-current','page');}
+  $$('.protobar button[data-go]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.go===name)));
+  window.scrollTo(0,0);
+}
+document.addEventListener('click',e=>{
+  const g=e.target.closest('[data-go]');if(g){go(g.dataset.go);return}
+  const n=e.target.closest('.nav a');if(n){if(n.hasAttribute('data-stub')){toast('هذه الشاشة خارج النموذج الحالي')}else go(n.dataset.view)}
+});
+
+/* ---------- scope / role ---------- */
+const state={scope:'all',role:'director'};
+function setScope(s){state.scope=s;$$('.scope button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.scope===s)));renderAll()}
+$$('.scope button').forEach(b=>b.addEventListener('click',()=>setScope(b.dataset.scope)));
+$('#roleSel').addEventListener('change',e=>{
+  const r=e.target.value;state.role=r;
+  const lock=r!=='director';
+  $$('.scope button').forEach(b=>b.disabled=lock&&b.dataset.scope!==r);
+  $('#whoName').textContent=r==='director'?'المدير · أ. عبد القادر':(r==='men'?'مشرف فرع الرجال · أ. ياسين':'مشرفة فرع النساء · أ. سمية');
+  setScope(r==='director'?'all':r);
+  if(lock)toast('نطاق هذا الدور مقيَّد بفرعه، ولا يرى الفرع الآخر');
+});
+
+/* ---------- data ---------- */
+const men=["أحمد بلقاسم","يوسف بلقاسم","إبراهيم عمراني","عبد الرحمن زروقي","محمد أمين حداد","إسماعيل بوعزة","عمر سعيدي","زكرياء بن يحيى","أنس طالبي","سليمان رحماني","بلال شريف","حمزة بوزيد","مصعب لعور","إلياس مختاري","ياسين قدّور","رضوان بن عمر"];
+const women=["مريم بلقاسم","فاطمة الزهراء مناد","خديجة عمراني","آسيا زروقي","عائشة حداد","سمية بوعزة","هاجر سعيدي","أم كلثوم بن يحيى","رقية طالبي","سارة رحماني","نور الهدى شريف","إيمان بوزيد","حفصة لعور","آمنة مختاري","زينب قدّور","ليلى بن عمر"];
+const gm=["حلقة الفتح","حلقة الفرقان","حلقة النور"], gw=["حلقة الهدى","حلقة الإحسان","حلقة السكينة"];
+const memo=["الملك 1–15","النبأ 1–20","القلم 40–52","الفاتحة","البقرة 1–12","الرحمن 1–30","يس 1–20","الإخلاص ← الناس","الواقعة 1–40","الجن 1–14"];
+const statuses=["نشط","نشط","نشط","نشط","نشط","نشط","منتظر","موقوف"];
+const sb={"نشط":"b-ok","منتظر":"b-warn","موقوف":"b-bad"};
+function rnd(i,k){const x=Math.sin(i*977+k*131)*10000;return x-Math.floor(x)}
+const students=[];
+for(let i=0;i<16;i++){const m=men[i];students.push({n:m,b:'men',g:gm[i%3],s:statuses[(i*3)%8],att:Math.round(70+rnd(i,1)*30),mem:memo[i%10],par:"0550 "+(100+i*7)+" "+(20+i)})}
+for(let i=0;i<16;i++){const w=women[i];students.push({n:w,b:'women',g:gw[i%3],s:statuses[(i*5+1)%8],att:Math.round(70+rnd(i,2)*30),mem:memo[(i+3)%10],par:"0661 "+(200+i*9)+" "+(30+i)})}
+students.forEach((s,i)=>s.id=String(380+i*3).padStart(4,'0'));
+const sessions=[
+ {t:"09:00",g:"حلقة الفرقان",b:'men',tc:"أ. عمر",st:"done",c:"18 حاضراً · 1 غائب"},
+ {t:"09:30",g:"حلقة الهدى",b:'women',tc:"أ. أسماء",st:"done",c:"15 حاضرة · 0 غائبة"},
+ {t:"14:00",g:"حلقة الإحسان",b:'women',tc:"أ. حفصة",st:"pending",c:"لم يُؤكَّد"},
+ {t:"16:30",g:"حلقة الفتح",b:'men',tc:"أ. محمد الأمين",st:"pending",c:"لم يُؤكَّد"},
+ {t:"17:00",g:"حلقة السكينة",b:'women',tc:"أ. مريم",st:"pending",c:"لم يُؤكَّد"},
+ {t:"18:15",g:"حلقة النور",b:'men',tc:"أ. يوسف",st:"cancel",c:"أُلغيت: غياب المعلم"}
+];
+const abs=[{n:"زكرياء بن يحيى",g:"حلقة الفتح",b:'men',d:3},{n:"هاجر سعيدي",g:"حلقة الهدى",b:'women',d:4},{n:"بلال شريف",g:"حلقة الفرقان",b:'men',d:3}];
+const bl=b=>b==='men'?'الرجال':'النساء';
+const inScope=b=>state.scope==='all'||state.scope===b;
+
+/* ---------- render ---------- */
+function renderHome(){
+  const rows=sessions.filter(s=>inScope(s.b));
+  $('#sessTbl tbody').innerHTML=rows.map(s=>`<tr><td><span class="num">${s.t}</span></td><td><b>${s.g}</b></td><td>${bl(s.b)}</td><td>${s.tc}</td><td>${
+    s.st==='done'?`<span class="badge b-ok">مؤكَّد</span> <span class="help">${s.c}</span>`:s.st==='pending'?`<span class="badge b-warn">بانتظار التأكيد</span>`:`<span class="badge b-neutral">ملغاة</span> <span class="help">${s.c}</span>`}</td><td style="text-align:end">${
+    s.st==='pending'?`<button class="btn sm sec" data-go="attendance">تسجيل الحضور</button>`:''}</td></tr>`).join('');
+  $('#sessCount').textContent=rows.length+' حصص';
+  const p=rows.filter(s=>s.st==='pending').length;
+  $('#pendTxt').textContent=p+' حصص';
+  $('#abList').innerHTML=abs.filter(a=>inScope(a.b)).map(a=>`<li><span><b>${a.n}</b><br><span class="help">${a.g}</span></span><span class="badge b-warn">${a.d} حصص متتالية</span></li>`).join('')||'<li class="help">لا أحد حالياً.</li>';
+}
+function renderStudents(){
+  const q=($('#stuQ').value||'').trim(), st=$('#stuStatus').value, f=window.__f||'all';
+  const rows=students.filter(s=>inScope(s.b)&&(f==='all'||s.b===f)&&(!st||s.s===st)&&(!q||s.n.includes(q)||s.id.includes(q)));
+  $('#stuTbl tbody').innerHTML=rows.map(s=>`<tr tabindex="0"><td><input class="cb" type="checkbox" aria-label="تحديد ${s.n}"></td><td><span class="num">${s.id}</span></td><td><a class="nm" data-go="profile">${s.n}</a></td><td>${s.g}</td><td>${bl(s.b)}</td><td><span class="badge ${sb[s.s]}">${s.s}</span></td><td><span class="mini"><i><b style="width:${s.att}%"></b></i><span class="num">${s.att}%</span></span></td><td>${s.mem}</td><td><span class="num">${s.par}</span></td></tr>`).join('')||`<tr><td colspan="9"><div class="empty"><b>لا نتائج مطابقة</b><span class="help">غيّروا البحث أو الفلاتر.</span></div></td></tr>`;
+  const total=state.scope==='men'?118:state.scope==='women'?96:214;
+  $('#stuCount').textContent=(f==='all'?total:(f==='men'?118:96))+' طالباً';
+  $('#stuFoot').textContent='عرض 1–'+rows.length+' من '+(f==='all'?total:(f==='men'?118:96));
+}
+$$('.chip[data-f]').forEach(c=>c.addEventListener('click',()=>{window.__f=c.dataset.f;$$('.chip[data-f]').forEach(x=>x.setAttribute('aria-pressed',String(x===c)));renderStudents()}));
+$('#stuQ').addEventListener('input',renderStudents);$('#stuStatus').addEventListener('change',renderStudents);
+function renderAll(){
+  renderHome();renderStudents();
+  $$('.chip[data-f]').forEach(c=>c.disabled=state.scope!=='all'&&c.dataset.f!=='all'&&c.dataset.f!==state.scope);
+}
+
+/* ---------- attendance ---------- */
+const roster=["أحمد بلقاسم","يوسف بلقاسم","إبراهيم عمراني","عبد الرحمن زروقي","محمد أمين حداد","إسماعيل بوعزة","عمر سعيدي","زكرياء بن يحيى","أنس طالبي","سليمان رحماني","بلال شريف","حمزة بوزيد","مصعب لعور","إلياس مختاري"];
+const rs=roster.map(()=> 'present');rs[7]='absent';rs[10]='late';
+const lab={present:"حاضر",late:"متأخر",absent:"غائب",excused:"بعذر"};
+function renderRoster(){
+  const box=$('#roster');$$('.rrow:not(.head)',box).forEach(x=>x.remove());
+  roster.forEach((n,i)=>{
+    const d=document.createElement('div');d.className='rrow';d.tabIndex=0;d.setAttribute('role','listitem');d.dataset.i=i;
+    d.innerHTML=`<span class="no num">${i+1}</span><span><b>${n}</b></span><span class="seg" role="group" aria-label="حالة ${n}">${['present','late','absent','excused'].map(v=>`<button data-v="${v}" aria-pressed="${rs[i]===v}">${lab[v]}</button>`).join('')}</span><span>${i===7?'<span class="help">غاب الحصتين السابقتين</span>':i===10?'<span class="help">وصل 16:50</span>':''}</span>`;
+    box.appendChild(d)});
+  counts();
+}
+function counts(){['present','late','absent','excused'].forEach((v,k)=>$('#c'+'PLAE'[k]).textContent=rs.filter(x=>x===v).length)}
+$('#roster').addEventListener('click',e=>{const b=e.target.closest('.seg button');if(!b)return;const i=+b.closest('.rrow').dataset.i;rs[i]=b.dataset.v;unconfirm();renderRoster();$$('.rrow')[i+1].focus()});
+$('#roster').addEventListener('keydown',e=>{
+  const r=e.target.closest('.rrow[data-i]');if(!r)return;const i=+r.dataset.i;
+  if(e.key==='ArrowDown'){e.preventDefault();($$('.rrow[data-i]')[i+1]||r).focus()}
+  else if(e.key==='ArrowUp'){e.preventDefault();($$('.rrow[data-i]')[i-1]||r).focus()}
+  else if('1234'.includes(e.key)&&e.key.length===1){rs[i]=['present','late','absent','excused'][+e.key-1];unconfirm();renderRoster();$$('.rrow[data-i]')[i].focus()}
+});
+let confirmed=false;
+function unconfirm(){if(!confirmed)return;confirmed=false;setBanner()}
+function setBanner(){const b=$('#attBanner');
+  if(confirmed){b.className='banner ok';b.innerHTML='<svg class="i"><use href="#i-ok"/></svg><span><b>تم تأكيد الحضور.</b> أي تعديل بعد الآن يُسجَّل كتصحيح بسبب وتاريخ.</span>';$('#confirmBtn').textContent='تم التأكيد';$('#confirmBtn').disabled=true}
+  else{b.className='banner warn';b.innerHTML='<svg class="i"><use href="#i-warn"/></svg><span><b>لم يُؤكَّد الحضور بعد.</b> الحالات المعبّأة مسبقاً "حاضر" للتسريع، ولا تُحسب مسجَّلة حتى تؤكدوا.</span>';$('#confirmBtn').textContent='تأكيد الحضور';$('#confirmBtn').disabled=false}}
+$('#confirmBtn').addEventListener('click',()=>{confirmed=true;setBanner();toast('تم تأكيد الحضور')});
+document.addEventListener('keydown',e=>{if(e.ctrlKey&&e.key==='Enter'&&$('#v-attendance').classList.contains('on')&&$('#s-app').classList.contains('on')){$('#confirmBtn').click()}});
+
+/* ---------- profile surah map ---------- */
+const surahs="الفاتحة،البقرة،آل عمران،النساء،المائدة،الأنعام،الأعراف،الأنفال،التوبة،يونس،هود،يوسف،الرعد،إبراهيم،الحجر،النحل،الإسراء،الكهف،مريم،طه،الأنبياء،الحج،المؤمنون،النور،الفرقان،الشعراء،النمل،القصص،العنكبوت،الروم،لقمان،السجدة،الأحزاب،سبأ،فاطر،يس،الصافات،ص،الزمر،غافر،فصلت،الشورى،الزخرف،الدخان،الجاثية،الأحقاف،محمد،الفتح،الحجرات،ق،الذاريات،الطور،النجم،القمر،الرحمن،الواقعة،الحديد،المجادلة،الحشر،الممتحنة،الصف،الجمعة،المنافقون،التغابن،الطلاق،التحريم،الملك،القلم،الحاقة،المعارج،نوح،الجن،المزمل،المدثر،القيامة،الإنسان،المرسلات،النبأ،النازعات،عبس،التكوير،الانفطار،المطففين،الانشقاق،البروج،الطارق،الأعلى،الغاشية،الفجر،البلد،الشمس،الليل،الضحى،الشرح،التين،العلق،القدر،البينة،الزلزلة،العاديات،القارعة،التكاثر،العصر،الهمزة،الفيل،قريش،الماعون،الكوثر،الكافرون،النصر،المسد،الإخلاص،الفلق،الناس".split("،");
+const lv=new Array(114).fill(0);
+for(let i=77;i<114;i++)lv[i]=4;lv[0]=4;lv[66]=4;lv[67]=3;lv[55]=2;lv[56]=1;lv[35]=2;lv[1]=1;lv[17]=1;lv[18]=2;lv[75]=4;lv[73]=3;lv[72]=4;lv[71]=4;lv[70]=3;lv[69]=2;lv[68]=2;lv[64]=2;lv[63]=1;lv[61]=1;
+$('#smap').innerHTML=surahs.map((s,i)=>`<i data-l="${lv[i]}" title="${i+1}. ${s}"></i>`).join('');
+$$('.opt').forEach(g=>g.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$$('button',g).forEach(x=>x.setAttribute('aria-pressed',String(x===b)))}));
+
+/* ---------- portal ---------- */
+const kids=[
+ {n:"يوسف",g:"حلقة الفتح · فرع الرجال",cal:"p p p a p l p p p p e p p p p p p p a p p p p l p p p p p",pct:"93%",ayat:664,recent:[["22/11","حفظ جديد","الملك 1–15","ممتاز"],["19/11","مراجعة","النبأ ← النازعات","جيد جداً"],["17/11","حفظ جديد","القلم 40–52","جيد"]]},
+ {n:"مريم",g:"حلقة الهدى · فرع النساء",cal:"p p p p p p p p l p p p p p p p p p p p e p p p p p p p p",pct:"98%",ayat:211,recent:[["22/11","حفظ جديد","الرحمن 1–30","ممتاز"],["20/11","مراجعة","الملك كاملة","جيد جداً"]]}
+];
+function renderKid(i){
+  const k=kids[i];const cls={p:'حاضر',a:'غائب',l:'متأخر',e:'بعذر'};
+  $('#kidBody').innerHTML=`
+  <div><h2>${k.n} <small>${k.g}</small></h2>
+    <div class="ann"><b>إعلان:</b> لا حلقات يوم الخميس القادم بسبب اجتماع المعلمين. تعود الحلقات السبت.</div></div>
+  <div><h2>الحضور <small>آخر 29 يوماً · <span class="num">${k.pct}</span></small></h2>
+    <div class="cal">${k.cal.split(' ').map((c,j)=>`<span class="${c}" role="img" aria-label="اليوم ${j+1}: ${cls[c]}" title="${cls[c]}">${j+1}</span>`).join('')}</div>
+    <div class="legend2"><span style="color:var(--ok)">■ حاضر</span><span style="color:var(--bad)">● غائب</span><span style="color:var(--warn)">▲ متأخر</span><span style="color:var(--teal)">◆ بعذر</span></div></div>
+  <div><h2>المحفوظ <small>حسب سجلات الجمعية</small></h2>
+    <div style="display:flex;gap:6px;align-items:baseline"><span class="num" style="font-size:36px;color:var(--em);font-weight:500">${k.ayat}</span><span>آية</span></div></div>
+  <div><h2>آخر التسجيلات</h2><ul class="recent-list">${k.recent.map(r=>`<li><span><b>${r[2]}</b><br><span class="help">${r[1]} · <span class="num">${r[0]}</span></span></span><span class="badge b-teal">${r[3]}</span></li>`).join('')}</ul></div>
+  <div class="fresh"><svg class="i" style="width:18px;height:18px"><use href="#i-info"/></svg>آخر تحديث من الجمعية: الجمعة 18:42. قد لا تظهر أحدث التسجيلات بعد.</div>`;
+}
+$$('.kids button').forEach(b=>b.addEventListener('click',()=>{$$('.kids button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderKid(+b.dataset.kid)}));
+renderKid(0);
+
+/* ---------- design sheet ---------- */
+function lin(c){c/=255;return c<=.03928?c/12.92:Math.pow((c+.055)/1.055,2.4)}
+function Lm(h){h=h.replace('#','');const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);return .2126*lin(r)+.7152*lin(g)+.0722*lin(b)}
+function cr(a,b){let x=Lm(a),y=Lm(b);if(x<y)[x,y]=[y,x];return ((x+.05)/(y+.05)).toFixed(2)}
+const sw=[["الزمردي الأساسي","#064E3B","#FFFFFF","زر رئيسي · عناوين"],["الأخضر العميق","#003527","#F4F5F0","الشريط الجانبي"],["النحاسي (زخرفة فقط)","#B48E43","#F4F5F0","خطوط · شعلة الشعار · لا يُستخدم نصاً"],["نحاسي للنص الفاتح","#8A6A2B","#FFFFFF","نص نحاسي على الفاتح"],["نحاسي للخلفية الداكنة","#C9A55B","#003527","نص/أيقونة على الداكن"],["التيل الفارسي","#0F766E","#FFFFFF","روابط · تركيز"],["العاجي الدافئ","#F4F5F0","#0F172A","خلفية التطبيق"],["النص الأساسي","#0F172A","#F4F5F0","نص"],["النص الثانوي","#334155","#F4F5F0","نص ثانوي"],["نص مساعد","#566377","#F4F5F0","نص مساعد ≥ 13px"],["نجاح","#166534","#FFFFFF","حاضر · مؤكَّد"],["خطر / غياب","#B42318","#FFFFFF","غائب · خطأ"]];
+$('#swatches').innerHTML=sw.map(([n,h,t,u])=>{const c=cr(h,t);return `<div><i style="background:${h}"></i><p><b>${n}</b><span class="cr">${h}</span> · ${u}<br>مع <span class="cr">${t}</span>: <span class="cr ${c>=4.5?'pass':'fail'}">${c}:1 ${c>=4.5?'✓':'✗'}</span></p></div>`}).join('');
+
+/* ---------- wiring ---------- */
+$$('.protobar button[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+$('#pubBtn').addEventListener('click',()=>toast('تم النشر: 12 تغييراً وصلت إلى البوابة'));
+renderRoster();setBanner();renderAll();
+if(location.hash){const h=location.hash.slice(1);if(['login','home','students','attendance','profile','portal','system'].includes(h))go(h)}
+</script>
+</body>
+</html>

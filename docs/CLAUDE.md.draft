@@ -1,0 +1,39 @@
+# MISHKAT — project rules (DRAFT for approval; rename to CLAUDE.md at repo root once approved)
+
+## What this is
+MISHKAT (مِشكاة): Quranic association management. Release 1 = Windows desktop (offline, system of record) + guardian web portal (mobile-first, read-only, one-way publish). Pilot: 200+ students, two branches (men's/women's), one PC.
+
+## Stack (ADR-003, approved 2026-11-20; spike pending)
+TypeScript end-to-end: one UI stack for the desktop shell (Electron default, Tauri candidate) and the guardian portal; pure TypeScript `domain` package that imports nothing; SQLite locally (WAL, STRICT, foreign keys on); PostgreSQL + row-level security for the portal. Details in `docs/SYSTEM_ARCHITECTURE.md`.
+
+## Current phase
+Discovery and architecture only. **No application code until the user approves the architecture and roadmap.** Work in 4 batches; stop after each for approval. Source of truth for scope: `docs/PRD.md`; unresolved items: `docs/OPEN_DECISIONS.md`.
+
+## Rules
+1. Never invent business, legal, or product rules. Record them as `OD-###` with options and a recommendation.
+2. Never claim tests passed without running them. Never hide failures.
+3. Do not install packages, change system configuration, or overwrite files without inspection/approval.
+4. Mark changing technology facts `VERIFY` and check before relying on them. Legal topics: flag for professional review, never assert compliance.
+5. IDs: `REQ-###`, `BR-###`, `OD-###`, `RISK-###`, `NFR-###`; ADR for every significant technical decision.
+6. Every document: Definition of Done at top; sections Confirmed / Recommended / Unresolved / Future; closing cross-role review.
+7. Documents in English; Arabic UI terms live in `docs/GLOSSARY.md`.
+
+## Product invariants (must be domain-tested)
+- One active enrollment per student per academic year; transfers keep history.
+- Attendance references a valid enrollment and session.
+- Memorization progress = union of ranges, never summed counts; exact Surah/Ayah references.
+- Financial/academic corrections use explicit correction records, not silent edits.
+- Tenant and branch data never leak (branch-scoped by default, OD-003).
+- Licence lapse never locks access to the association's data.
+- Audit log is not editable by ordinary users.
+
+## Schema must be sync-ready from the first migration
+UUID (prefer v7) keys, `tenant_id` on tenant-owned tables, version/`updated_at`/`updated_by`, soft deletes with tombstones, no auto-increment ids.
+
+## Brand tokens
+Primary Emerald `#064E3B` · Deep Green `#003527` · Archival Brass `#B48E43` · Persian Teal `#0F766E` · Warm Ivory `#F4F5F0` · White `#FFFFFF` · Text `#0F172A` / `#334155`.
+Fonts: IBM Plex Sans Arabic (Arabic UI), IBM Plex Sans (Latin), a separate Quran-text font for ayat.
+**Brass fails contrast as small text on light backgrounds (2.78:1 on Ivory)** — use it for decoration only, or a validated darker variant.
+
+## Design
+Arabic-first RTL, dense but readable, premium institutional. Avoid generic dashboards, excess cards, random gradients, ornamentation. Design system and an approved HTML prototype come before Compose/web implementation.

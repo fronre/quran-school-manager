@@ -1,0 +1,23 @@
+node_modules/
+dist/
+spike/dist/
+spike/out/
+
+# build outputs, installers and test runs (large, regenerable)
+apps/desktop/out/
+handoff-package/
+test-run/
+*.exe
+*.zip
+*.blockmap
+
+# local data, keys and backups: never commit
+*.db
+*.db-wal
+*.db-shm
+*.mshkbk
+recovery.key.bin
+phone-tls.json
+.claude/settings.local.json
+.env
+.env.*

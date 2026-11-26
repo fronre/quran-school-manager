@@ -1,0 +1,37 @@
+// Smoke test on the BUILT app: forgotten login password -> reset with the recovery key from the setup wizard -> sign in with the new password.
+const { app, BrowserWindow } = require('electron');
+const fs = require('fs'), path = require('path');
+const base = path.join(__dirname, '..', 'out', 'reset');
+for (const d of ['userdata', 'backups']) fs.rmSync(path.join(base, d), { recursive: true, force: true });
+fs.mkdirSync(base, { recursive: true });
+app.setPath('userData', path.join(base, 'userdata'));
+process.env.MISHKAT_TEST_PICK_FOLDER = path.join(base, 'backups');
+const report = { checks: {} }; const C = report.checks; const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+process.on('unhandledRejection', (e) => { report.crash = String(e && e.stack || e); fs.writeFileSync(path.join(base, 'report.json'), JSON.stringify(report, null, 2)); app.exit(3); });
+setTimeout(() => { report.timeout = true; fs.writeFileSync(path.join(base, 'report.json'), JSON.stringify(report, null, 2)); app.exit(2); }, 150000);
+require('../dist/main.cjs');
+app.whenReady().then(async () => {
+  let win; for (let i = 0; i < 100 && !(win = BrowserWindow.getAllWindows()[0]); i++) await sleep(100);
+  const wc = win.webContents; await new Promise((r) => (wc.isLoading() ? wc.once('did-finish-load', r) : r()));
+  win.setSize(1440, 900); await sleep(1200);
+  const js = (c) => wc.executeJavaScript(c);
+  const setv = (sel, v) => js(`(function(){const el=document.querySelector(${JSON.stringify(sel)});if(!el)return false;const P=el instanceof HTMLTextAreaElement?HTMLTextAreaElement.prototype:HTMLInputElement.prototype;Object.getOwnPropertyDescriptor(P,'value').set.call(el,${JSON.stringify(v)});el.dispatchEvent(new Event('input',{bubbles:true}));return true})()`);
+  const click = (t) => js(`(function(){const b=[...document.querySelectorAll('button')].find(x=>x.textContent.trim()===${JSON.stringify(t)}&&!x.disabled);if(!b)return false;b.click();return true})()`);
+  const id = (i, v) => setv('#' + i, v); const q = (sel) => js(`document.querySelector(${JSON.stringify(sel)})?.innerText ?? null`);
+  const shot = async (n) => { wc.invalidate(); await sleep(450); fs.writeFileSync(path.join(base, n + '.png'), (await wc.capturePage()).toPNG()); };
+  await click('ابدؤوا'); await sleep(300); await sleep(500); await click('التالي'); await sleep(400);
+  const key = await js('[...document.querySelectorAll(".key-grid span")].map(s=>s.textContent)'); C.keyGroups = key.length; await click('التالي'); await sleep(300);
+  await id('k1', key[0]); await id('k2', key[key.length - 1]); await sleep(150); await click('التالي'); await sleep(300); await click('التالي'); await sleep(300); await click('التالي'); await sleep(300);
+  await id('yn', '2026-2027'); await id('ys', '2026-09-01'); await id('ye', '2027-06-30'); await sleep(150); await click('التالي'); await sleep(300);
+  await click('اختيار مجلد آخر'); await sleep(300); await click('إنهاء الإعداد'); await sleep(7000); C.forceScreen = await q('.login-form'); await shot('00-force-change'); await id('fp', 'عبارة سر طويلة 2026'); await id('fp2', 'عبارة سر طويلة 2026'); await sleep(200); await click('حفظ ومتابعة'); await sleep(3500);
+  await click('تسجيل الخروج'); await sleep(1500); C.loginShown = await q('.login-form h2'); C.loginHint = await q('.banner.info');
+  await click('نسيتُ كلمة المرور'); await sleep(400); C.resetTitle = await q('.login-form h2'); await shot('01-forgot');
+  const keyText = key.join('-');
+  await setv('#rk', key.slice(0, -1).join('-') + '-AAAA'); await id('np', 'كلمة جديدة طويلة 2027'); await id('np2', 'كلمة جديدة طويلة 2027'); await sleep(200); await click('تغيير كلمة المرور'); await sleep(1500); C.wrongKey = await q('.banner.error');
+  await id('np2', 'مختلفة'); await setv('#rk', keyText); await sleep(200); await click('تغيير كلمة المرور'); await sleep(600); C.mismatch = await q('.banner.error');
+  await id('np', 'قصيرة'); await id('np2', 'قصيرة'); await sleep(200); await click('تغيير كلمة المرور'); await sleep(1500); C.weak = await q('.banner.error');
+  await id('np', 'كلمة جديدة طويلة 2027'); await id('np2', 'كلمة جديدة طويلة 2027'); await sleep(200); await click('تغيير كلمة المرور'); await sleep(2000); C.afterReset = await q('.banner.info'); C.usernamePrefilled = await js('document.getElementById("u")?.value'); await shot('02-after-reset');
+  await id('p', 'عبارة سر طويلة 2026'); await sleep(150); await click('دخول'); await sleep(2500); C.oldPasswordRejected = await q('.banner.error');
+  await id('p', 'كلمة جديدة طويلة 2027'); await sleep(150); await click('دخول'); await sleep(3500); C.signedIn = await q('.who');
+  fs.writeFileSync(path.join(base, 'report.json'), JSON.stringify(report, null, 2)); app.exit(0);
+});

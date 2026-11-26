@@ -1,0 +1,1 @@
+{"name":"@mishkat/db","private":true,"version":"0.0.0","type":"module","main":"src/index.ts","dependencies":{"@mishkat/domain":"*","@node-rs/argon2":"2.2.2","better-sqlite3":"13.2.0"}}

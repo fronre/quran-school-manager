@@ -1,0 +1,40 @@
+{
+  "name": "mishkat-spike",
+  "private": true,
+  "version": "0.0.0",
+  "description": "THROWAWAY spike S1-S4. Not product code.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "@fontsource/ibm-plex-sans-arabic": "5.3.0",
+    "better-sqlite3": "13.2.0"
+  },
+  "devDependencies": {
+    "electron": "45.4.1",
+    "electron-builder": "26.18.0"
+  },
+  "build": {
+    "appId": "dz.mishkat.spike",
+    "productName": "MishkatSpike",
+    "files": [
+      "main.js",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false
+    },
+    "directories": {
+      "output": "dist"
+    },
+    "npmRebuild": false,
+    "asarUnpack": [
+      "**/*.node"
+    ]
+  },
+  "author": "spike"
+}

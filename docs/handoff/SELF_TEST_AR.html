@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>الشهاب — قائمة الاختبار الكامل</title>
+<style>
+@font-face{font-family:N;font-weight:400;src:url('../../node_modules/@fontsource/noto-sans-arabic/files/noto-sans-arabic-arabic-400-normal.woff2')}
+@font-face{font-family:N;font-weight:700;src:url('../../node_modules/@fontsource/noto-sans-arabic/files/noto-sans-arabic-arabic-700-normal.woff2')}
+@page{size:A4;margin:13mm 12mm}
+:root{--em:#064E3B;--deep:#003527;--brass:#8A6A2B;--ink:#0F172A;--ink2:#334155;--line:#DADDD0;--ivory:#F4F5F0;--warn:#92400E;--warnt:#FBF0E1}
+*{box-sizing:border-box}
+body{font-family:N,'Segoe UI',Tahoma,sans-serif;color:var(--ink);font-size:10.5pt;line-height:1.65;margin:0}
+.n,code{direction:ltr;unicode-bidi:isolate}
+code{font-family:Consolas,monospace;background:var(--ivory);padding:0 3pt;border-radius:3px;font-size:9.5pt}
+h1{font-size:22pt;color:#fff;margin:0 0 2pt}
+h2{font-size:13.5pt;color:var(--em);margin:14pt 0 4pt;padding-bottom:2pt;border-bottom:2px solid var(--brass);break-after:avoid}
+p{margin:0 0 6pt}ul,ol{margin:2pt 0 6pt;padding-inline-start:18pt}li{margin-bottom:2pt}
+.cover{background:var(--deep);color:#fff;padding:20pt 22pt;border-radius:8px;margin-bottom:10pt}.cover .sub{color:#CFE3DA}.cover .meta{color:#C9A55B;margin-top:6pt;font-size:9.5pt}
+.box{border:1px solid var(--line);border-inline-start:4px solid var(--brass);background:var(--ivory);padding:6pt 10pt;margin:6pt 0;border-radius:4px;break-inside:avoid}
+.box.warn{border-inline-start-color:var(--warn);background:var(--warnt)}
+table{border-collapse:collapse;width:100%;margin:4pt 0 8pt;font-size:9.6pt}
+th,td{border:1px solid var(--line);padding:3.5pt 6pt;text-align:start;vertical-align:top}
+th{background:var(--ivory);font-weight:700}
+tr{break-inside:avoid}
+td.id{width:5%;color:var(--ink2);text-align:center}
+td.ok{width:9%;text-align:center;white-space:nowrap;color:#999}
+td.note{width:14%}
+.tag{display:inline-block;font-size:8.5pt;background:var(--em);color:#fff;border-radius:3px;padding:0 5pt;margin-inline-start:4pt}
+.tag.inv{background:var(--brass)}
+.line{border-bottom:1px solid #999;height:18pt}
+.pb{break-before:page}
+</style></head><body>
+
+<div class="cover"><div class="sub">مِشكاة · MISHKAT</div><h1>قائمة الاختبار الكامل للبرنامج</h1><div class="sub">«الشهاب» — النسخة <span class="n">0.1.0</span> · لاختبار كل شيء قبل تقديمه للجمعية</div><div class="meta">أُعدّت في 22 نوفمبر 2026 · تُطبع وتُملأ باليد</div></div>
+
+<div class="box"><b>متى نعتبر الاختبار منتهياً؟</b> عندما تكون كل الخانات في الأقسام ١ إلى ١٥ مؤشَّرة بـ ✓ أو ✗، وكل ✗ مكتوب في «سجل المشاكل» في آخر القائمة مع لقطة شاشة. لا نقدّم البرنامج للجمعية وفي السجل مشكلة من نوع «خطيرة» (ضياع بيانات، أو ظهور بيانات فرع في فرع آخر، أو تعذّر الاستعادة).</div>
+
+<h2>٠. التحضير: ثلاث نسخ منفصلة، والبيانات الحقيقية لا تُلمس</h2>
+<table>
+<tr><th style="width:24%">الملف (في مجلد MISHKAT)</th><th>ماذا يفعل</th><th style="width:28%">متى نستعمله</th></tr>
+<tr><td><code>Run-Test.bat</code></td><td>يفتح البرنامج على نسخة اختبار <b>فارغة</b> في <code>test-run\pc1</code>. أول مرة يظهر معالج الإعداد، كما سيحدث عند الجمعية.</td><td>كل هذه القائمة.</td></tr>
+<tr><td><code>Run-Test.bat pc2</code></td><td>نسخة فارغة ثانية في <code>test-run\pc2</code>، تمثّل «حاسوباً آخر».</td><td>القسم ١٢: اختبار استعادة نسخة احتياطية.</td></tr>
+<tr><td><code>Reset-Test.bat</code></td><td>يمسح نسخة الاختبار <code>pc1</code> (أو <code>Reset-Test.bat pc2</code>) لنبدأ من الصفر. يطلب التأكيد. أغلقوا البرنامج قبله.</td><td>لإعادة الاختبار من أوله.</td></tr>
+<tr><td><code>Run-Demo.bat</code></td><td>يفتح نسخة <b>العرض</b> المليئة بالأسماء والأفواج والحضور. الدخول: <code>demo</code> / <code>sidi-aoun-test-2026-pass</code></td><td>يوم التقديم أمام الجمعية فقط، لا للاختبار.</td></tr>
+</table>
+<ul>
+<li>البرنامج المثبَّت على هذا الحاسوب هو آخر نسخة (22 نوفمبر). الملفات أعلاه تفتحه هو، لكن كل واحد على مجلد بيانات خاص به.</li>
+<li>جهّزوا: الملف <code>Sample-Association-Data.xlsx</code>، وفلاشة، وطابعة، وهاتفاً على نفس الواي فاي، وساعتين أو ثلاثاً (يمكن تقسيمها على يومين).</li>
+<li>في كل سطر: ✓ إذا حدث المتوقَّع، ✗ إذا لم يحدث (واكتبوا رقم السطر في سجل المشاكل). <span class="tag inv">قاعدة</span> = قاعدة أساسية في البرنامج يجب ألا تُكسر أبداً.</li>
+</ul>
+
+<h2>١. التثبيت وأول تشغيل (معالج الإعداد)</h2>
+<table>
+<tr><th>#</th><th>الخطوة</th><th>المتوقَّع</th><th>✓ / ✗</th><th>ملاحظة</th></tr>
+<tr><td class="id">1.1</td><td>شغّلوا <code>Run-Test.bat</code></td><td>يفتح «الشهاب» على شاشة «مرحباً بكم في الشهاب» (المعالج).</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">1.2</td><td>تابعوا: «حساب الدخول»</td><td>تظهر شاشة الحساب الجاهز <code>admin / admin</code>.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">1.3</td><td>«مفتاح الاسترداد»: اكتبوه على ورقة</td><td>مفتاح طويل يظهر مرة واحدة.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">1.4</td><td>«تأكيد المفتاح»: اكتبوا جزءاً خاطئاً عمداً، ثم الصحيح</td><td>الخاطئ يُرفض برسالة واضحة، والصحيح يُقبل.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">1.5</td><td>«الجمعية»، «الفروع»، «السنة الدراسية»</td><td>الاسم مكتوب مسبقاً ويُعدَّل. فرعا الرجال والنساء موجودان. السنة <span class="n">2026-2027</span>.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">1.6</td><td>«النسخة الأولى»: اختاروا مجلداً على الفلاشة</td><td>تُؤخذ نسخة احتياطية مشفّرة، ويظهر ملف في الفلاشة.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">1.7</td><td>كلمة المرور الجديدة: جرّبوا <code>admin</code>، ثم <code>12345</code>، ثم كلمة فيها اسم المستخدم، ثم عبارة صحيحة من 10 أحرف فأكثر</td><td>الثلاث الأولى تُرفض برسالة مفهومة بالعربية، والأخيرة تُقبل وتُفتح «الرئيسية».</td><td class="ok">☐</td><td class="note"></td></tr>
+</table>
+
+<h2>٢. الدخول والخروج واسترجاع الحساب</h2>
+<table>
+<tr><th>#</th><th>الخطوة</th><th>المتوقَّع</th><th>✓ / ✗</th><th>ملاحظة</th></tr>
+<tr><td class="id">2.1</td><td>«تسجيل الخروج» ثم الدخول بكلمة مرور خاطئة</td><td>رسالة خطأ، دون كشف إن كان اسم المستخدم صحيحاً.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">2.2</td><td>«نسيتُ كلمة المرور» ← مفتاح الاسترداد من الورقة ← كلمة جديدة</td><td>الدخول ينجح بالكلمة الجديدة، والبيانات كما هي.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">2.3</td><td>«الإعدادات» ← «تغيير كلمة المرور»</td><td>تتغيّر، والقديمة لم تعد تعمل.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">2.4</td><td>أغلقوا البرنامج وأعيدوا فتحه بـ <code>Run-Test.bat</code></td><td>يطلب الدخول ولا يعيد المعالج.</td><td class="ok">☐</td><td class="note"></td></tr>
+</table>
+
+<h2>٣. الإعدادات</h2>
+<table>
+<tr><th>#</th><th>الخطوة</th><th>المتوقَّع</th><th>✓ / ✗</th><th>ملاحظة</th></tr>
+<tr><td class="id">3.1</td><td>«بيانات الجمعية»: عدّلوا العنوان ← «حفظ»</td><td>يُحفظ ويظهر في الوصل والتقارير المطبوعة لاحقاً.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">3.2</td><td>«شعار الجمعية»: أضيفوا صورة، ثم «إزالة الشعار»</td><td>يظهر الشعار ثم يختفي. صورة غير صالحة تُرفض.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">3.3</td><td>«الفروع» ← «إضافة فرع» تجريبي</td><td>يظهر في مبدّل الفروع في الشريط الجانبي.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">3.4</td><td>«تقديرات الحفظ»: غيّروا تقديراً ← «حفظ التقديرات»</td><td>يظهر التقدير الجديد عند تسجيل الحفظ (القسم ٩).</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">3.5</td><td>«حول البرنامج»</td><td>يعرض النسخة <span class="n">0.1.0</span>.</td><td class="ok">☐</td><td class="note"></td></tr>
+</table>
+
+<h2>٤. الحسابات والصلاحيات وسجل النشاط</h2>
+<table>
+<tr><th>#</th><th>الخطوة</th><th>المتوقَّع</th><th>✓ / ✗</th><th>ملاحظة</th></tr>
+<tr><td class="id">4.1</td><td>«الحسابات» ← «إضافة شخص»: مشرف فرع النساء ← «إنشاء الحساب»</td><td>تظهر كلمة مرور مؤقتة مرة واحدة.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">4.2</td><td>اخرجوا وادخلوا بالحساب الجديد</td><td>يُجبر على اختيار كلمة مرور جديدة.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">4.3</td><td>بهذا الحساب: تنقّلوا في كل الشاشات <span class="tag inv">قاعدة</span></td><td>يرى فرع النساء <b>فقط</b>، ولا يرى «الحسابات» ولا «المال» ولا «النسخ الاحتياطي» ولا «الإعدادات».</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">4.4</td><td>من حساب الأدمن: «إيقاف» الحساب، ثم محاولة الدخول به، ثم «تفعيل»</td><td>الدخول يُرفض وهو موقوف، ويعمل بعد التفعيل.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">4.5</td><td>«سجل النشاط» ← «عرض الأقدم» <span class="tag inv">قاعدة</span></td><td>كل ما فعله المشرف مسجَّل باسمه، ولا يوجد زر لتعديل السجل أو حذفه.</td><td class="ok">☐</td><td class="note"></td></tr>
+</table>
+
+<h2 class="pb">٥. الطلاب والاستيراد</h2>
+<table>
+<tr><th>#</th><th>الخطوة</th><th>المتوقَّع</th><th>✓ / ✗</th><th>ملاحظة</th></tr>
+<tr><td class="id">5.1</td><td>«استيراد من Excel» ← <code>Sample-Association-Data.xlsx</code></td><td>تظهر الخطوات: اختيار الملف ← ربط الأعمدة (مقترح تلقائياً) ← المراجعة.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">5.2</td><td>في «المراجعة»: افحصوا الصفوف المعلَّمة</td><td>الصفوف ذات المشاكل المقصودة واضحة السبب بالعربية. «تنزيل ملف الأخطاء» يعطي ملف Excel بها.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">5.3</td><td>استوردوا ← «عرض الطلاب»</td><td>العدد مطابق للصفوف السليمة، والتواريخ والأرقام صحيحة.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">5.4</td><td>أعيدوا استيراد الملف نفسه</td><td>لا يُكرَّر الطلاب، أو يُنبَّه بوضوح على التكرار.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">5.5</td><td>أضيفوا طالباً يدوياً برقم هاتف خاطئ (حروف)</td><td>رسالة «رقم الهاتف غير صحيح»، ثم يُقبل بعد التصحيح.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">5.6</td><td>البحث والتنقل بين الصفحات («السابق»)</td><td>البحث بالاسم والرقم يعمل، بالعربية.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">5.7</td><td>بروفايل طالب: تعديل، «اختيار صورة» ثم «حذف الصورة»</td><td>التعديل يُحفظ، والصورة تظهر ثم تُحذف.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">5.8</td><td>«أرشفة الطالب» ثم «استعادة الطالب»</td><td>يختفي من القائمة الحالية ويعود كما كان، مع تاريخه.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">5.9</td><td>«تحديث طلاب من Excel»: غيّروا هاتف طالبين في نسخة من الملف ← «معاينة»</td><td>تظهر التغييرات فقط (قديم ← جديد) قبل التطبيق.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">5.10</td><td>«تصدير Excel»، «تصدير XML»، «طباعة»</td><td>الملفان يُفتحان سليمين بالعربية، والطباعة مقروءة.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">5.11</td><td>بدّلوا بين «الفرعان / الرجال / النساء» <span class="tag inv">قاعدة</span></td><td>القائمة تتبع الفرع المختار في كل مرة، ولا يظهر طالب في فرع غير فرعه.</td><td class="ok">☐</td><td class="note"></td></tr>
+</table>
+
+<h2>٦. الأولياء وواتساب</h2>
+<div class="box warn"><b>لا تضغطوا «إرسال» داخل واتساب أبداً أثناء الاختبار:</b> أرقام الملف التجريبي بصيغة أرقام حقيقية.</div>
+<table>
+<tr><th>#</th><th>الخطوة</th><th>المتوقَّع</th><th>✓ / ✗</th><th>ملاحظة</th></tr>
+<tr><td class="id">6.1</td><td>«الطلاب» ← «استيراد الأولياء» بالملف نفسه ← «معاينة» ← استيراد</td><td>يُربط كل ولي بطالبه، مع صلة القرابة.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">6.2</td><td>بروفايل طالب ← «الأولياء»: أضيفوا ولياً، عدّلوه، ثم «إزالة»</td><td>كل عملية تنجح، ورقم أرضي يُنبَّه أنه لا يعمل مع واتساب.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">6.3</td><td>«واتساب» ← «فتح واتساب» (ثم أغلقوا دون إرسال)</td><td>تُفتح المحادثة والنص مكتوب، ورسالة «لم يُرسَل شيء من البرنامج». ويُسجَّل «فتح رسالة واتساب» في سجل النشاط.</td><td class="ok">☐</td><td class="note"></td></tr>
+</table>
+
+<h2>٧. المعلمون والأفواج</h2>
+<table>
+<tr><th>#</th><th>الخطوة</th><th>المتوقَّع</th><th>✓ / ✗</th><th>ملاحظة</th></tr>
+<tr><td class="id">7.1</td><td>«إضافة معلم» (اثنان، واحد لكل فرع)، ثم «أرشفة» و«استعادة»</td><td>يظهر في «الحاليون» ثم «الأرشيف» ثم يعود.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">7.2</td><td>«إضافة فوج» لكل فرع، واربطوا المعلم</td><td>الفوج يظهر في «النشطة» مع معلمه.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">7.3</td><td>سجّلوا 5 طلاب في كل فوج</td><td>يظهرون في الفوج، ولا يُعرض طالب من الفرع الآخر.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">7.4</td><td>حاولوا تسجيل طالب مسجَّل أصلاً في فوج آخر <span class="tag inv">قاعدة</span></td><td>لا يكون للطالب أكثر من تسجيل نشط واحد في السنة: يُرفض، أو يُعرض <b>نقله</b> مع حفظ تاريخ الفوج القديم.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">7.5</td><td>أخرجوا طالباً من فوج، ثم أغلقوا فوجاً تجريبياً</td><td>يبقى تاريخ الطالب في بروفايله، والفوج ينتقل إلى «المغلقة».</td><td class="ok">☐</td><td class="note"></td></tr>
+</table>
+
+<h2 class="pb">٨. الحضور</h2>
+<table>
+<tr><th>#</th><th>الخطوة</th><th>المتوقَّع</th><th>✓ / ✗</th><th>ملاحظة</th></tr>
+<tr><td class="id">8.0</td><td>«طباعة ورقة النداء للأستاذ»</td><td>ورقة بأسماء الفوج لذلك اليوم: ✓ حاضر، ✗ غائب، ملاحظة، وسطر لتوقيع الأستاذ.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">8.1</td><td>«ورقة اليوم» ← فوج: الكل «✓ حاضر». اضغطوا على اسم طالب ← «خيارات» لآخر ← «متأخر» مع الدقائق ← حفظ</td><td>الأول يصير «✗ غائب» (سطر أحمر)، والعدّاد يتغيّر. يُحفظ، ويظهر في «السجل».</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">8.1ب</td><td>«خيارات» ← «خرج مبكراً على الساعة» 17:30 + ملاحظة ← حفظ</td><td>يُحسب حاضراً، والملاحظة: «خرج مبكراً على الساعة 17:30 — …».</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">8.2</td><td>«تصحيح» حالة طالب مع ذكر السبب ← «حفظ التصحيح» <span class="tag inv">قاعدة</span></td><td>التصحيح يُحفظ <b>كسجل تصحيح</b> (القديم والجديد والسبب)، لا كتعديل صامت.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">8.3</td><td>يوم «بلا حصة» (إلغاء الحصة)</td><td>لا يُحسب غياباً على أحد.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">8.4</td><td>«واتساب للولي» لطالب غائب (دون إرسال)</td><td>تُفتح المحادثة بنص الغياب.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">8.5</td><td>طالب أُخرج من الفوج: هل يظهر في ورقة اليوم؟ <span class="tag inv">قاعدة</span></td><td>لا. الحضور يُسجَّل فقط لطالب مسجَّل في الفوج في ذلك اليوم.</td><td class="ok">☐</td><td class="note"></td></tr>
+</table>
+
+<h2>٩. الحفظ والتقييم</h2>
+<table>
+<tr><th>#</th><th>الخطوة</th><th>المتوقَّع</th><th>✓ / ✗</th><th>ملاحظة</th></tr>
+<tr><td class="id">9.1</td><td>طالب ← «حفظ جديد»: سورة الملك 1–10 بتقدير ← «حفظ التسجيل»</td><td>يظهر في السجل، وتتلوّن «الملك» جزئياً في خريطة السور.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">9.2</td><td>«ابدأ من الآية التالية» ← 11–20</td><td>يقترح تلقائياً الآية 11.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">9.3</td><td>سجّلوا 5–15 من الملك (متداخل) <span class="tag inv">قاعدة</span></td><td>مجموع المحفوظ = 20 آية لا 31: الحفظ «اتحاد مقاطع» وليس جمع أعداد.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">9.4</td><td>سجّلوا «مراجعة» و«تثبيت»</td><td>تُسجَّل دون أن تزيد المحفوظ الجديد.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">9.5</td><td>جرّبوا آية غير موجودة (مثلاً الملك 1–40)</td><td>تُرفض: سورة الملك 30 آية.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">9.6</td><td>«إلغاء السجل» لتسجيل خاطئ</td><td>يُلغى مع ذكره في السجل، ويعود المجموع صحيحاً.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">9.7</td><td>سجّلوا سورة قصيرة كاملة (الإخلاص)</td><td>تظهر مربعاً كامل اللون في الخريطة.</td><td class="ok">☐</td><td class="note"></td></tr>
+</table>
+
+<h2>١٠. المال (الرسوم الشهرية)</h2>
+<table>
+<tr><th>#</th><th>الخطوة</th><th>المتوقَّع</th><th>✓ / ✗</th><th>ملاحظة</th></tr>
+<tr><td class="id">10.1</td><td>«المال» أول مرة: أنشئوا «كلمة سر المال»</td><td>لا يُفتح القسم دونها. وبعد الخروج والدخول تُطلب من جديد.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">10.2</td><td>«المبلغ الشهري» ← «حفظ المبلغ»</td><td>تظهر الأشهر المستحقة لكل طالب.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">10.3</td><td>«تسجيل دفعة» ← «الوصل» ← طباعة</td><td>وصل برقم واسم الجمعية والمبلغ، مقروء على الطابعة الحقيقية.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">10.4</td><td>«إلغاء الوصل» مع السبب <span class="tag inv">قاعدة</span></td><td>الوصل يبقى ظاهراً كـ«ملغى» مع السبب، ولا يختفي، والمبلغ يرجع متأخراً.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">10.5</td><td>«المتأخرات» و«الأشهر غير المحسوبة» و«تصدير Excel»</td><td>الأرقام متطابقة مع ما سجّلتموه يدوياً على ورقة.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">10.6</td><td>«تغيير كلمة السر» للمال</td><td>تتغيّر، والقديمة لا تعمل.</td><td class="ok">☐</td><td class="note"></td></tr>
+</table>
+
+<h2 class="pb">١١. التقارير والطباعة</h2>
+<table>
+<tr><th>#</th><th>الخطوة</th><th>المتوقَّع</th><th>✓ / ✗</th><th>ملاحظة</th></tr>
+<tr><td class="id">11.1</td><td>«التقارير» ← «التسجيل»، «الحضور»، «نشاط الأفواج»</td><td>الأرقام مطابقة لما أدخلتموه في الأقسام ٥ و٧ و٨.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">11.2</td><td>ورقة حضور فارغة لفوج ← «طباعة»</td><td>الأسماء كلها، والجدول يتّسع على الورقة.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">11.3</td><td>«تصدير Excel» لكل تقرير</td><td>الملف يُفتح بالعربية والأرقام صحيحة.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">11.4</td><td>بروفايل طالب ← «طباعة كشف الطالب»</td><td>فيه الحضور هذا العام والحفظ، والشعار والعنوان.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">11.5</td><td>التقارير بفرع واحد مختار <span class="tag inv">قاعدة</span></td><td>لا تظهر أرقام الفرع الآخر.</td><td class="ok">☐</td><td class="note"></td></tr>
+</table>
+
+<h2>١٢. النسخ الاحتياطي والاستعادة (الأهم)</h2>
+<table>
+<tr><th>#</th><th>الخطوة</th><th>المتوقَّع</th><th>✓ / ✗</th><th>ملاحظة</th></tr>
+<tr><td class="id">12.1</td><td>«النسخ الاحتياطي» ← «حالة النسخ الاحتياطي» و«النسخ المحفوظة»</td><td>تظهر النسخ السابقة بتاريخها، و«سجل العمليات».</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">12.2</td><td>«نسخ احتياطي الآن» إلى الفلاشة</td><td>ملف جديد في الفلاشة.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">12.3</td><td>غيّروا شيئاً، ثم «تسجيل الخروج»</td><td>تُؤخذ نسخة تلقائية عند الخروج.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">12.4</td><td>أغلقوا البرنامج. شغّلوا <code>Run-Test.bat pc2</code> ← في المعالج اختاروا «استعادة» ← الفلاشة ← مفتاح الاسترداد</td><td>تعود كل البيانات: الطلاب والأفواج والحضور والحفظ والمال والحسابات.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">12.5</td><td>جرّبوا الاستعادة بمفتاح خاطئ</td><td>تُرفض، ولا تتلف شيئاً.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">12.6</td><td>قارنوا pc1 و pc2: عدد الطلاب، ومجموع حفظ طالب، ومتأخرات طالب</td><td>نفس الأرقام تماماً.</td><td class="ok">☐</td><td class="note"></td></tr>
+</table>
+
+<h2>١٣. السنة الدراسية</h2>
+<div class="box warn">في نسخة الاختبار <code>pc1</code> فقط، وفي آخر الاختبار، لأنها عملية كبيرة.</div>
+<table>
+<tr><th>#</th><th>الخطوة</th><th>المتوقَّع</th><th>✓ / ✗</th><th>ملاحظة</th></tr>
+<tr><td class="id">13.1</td><td>«الإعدادات» ← «السنة الدراسية» ← إقفال العام وفتح عام جديد ← «نقل» فوج</td><td>يطلب تأكيداً واضحاً قبل التنفيذ. الفوج المنقول يظهر في السنة الجديدة.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">13.2</td><td>افتحوا طالباً بعد الإقفال <span class="tag inv">قاعدة</span></td><td>حفظه وحضوره وماله في السنة السابقة كلها محفوظة.</td><td class="ok">☐</td><td class="note"></td></tr>
+</table>
+
+<h2 class="pb">١٤. نسخة الهاتف وصفحة الأولياء (تجريبيتان)</h2>
+<table>
+<tr><th>#</th><th>الخطوة</th><th>المتوقَّع</th><th>✓ / ✗</th><th>ملاحظة</th></tr>
+<tr><td class="id">14.1</td><td>«الإعدادات» ← «نسخة الهاتف» ← «تشغيل نسخة الهاتف»</td><td>قد يسأل جدار حماية ويندوز: اسمحوا للشبكة <b>الخاصة</b> فقط. تظهر عناوين للهاتف.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">14.2</td><td>على الهاتف: افتحوا العنوان ← «رمز ربط جديد» ← اكتبوه</td><td>يُربط الهاتف ويظهر في «الهواتف المربوطة».</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">14.3</td><td>سجّلوا حضوراً وحفظاً من الهاتف</td><td>يظهران على الحاسوب، ويُسجَّلان باسم الهاتف في سجل النشاط.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">14.4</td><td>اربطوا الهاتف بفرع واحد <span class="tag inv">قاعدة</span></td><td>لا يرى طلاب الفرع الآخر، ولا المال، ولا أرقام الأولياء، ولا الصور.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">14.5</td><td>«إلغاء الربط»</td><td>يتوقف الهاتف فوراً.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">14.6</td><td>«الأولياء» ← «رمز للتطبيق»، ثم على الهاتف العنوان مع <code>/g</code> ← رقم الولي + الرمز</td><td>يرى الولي أبناءه فقط: الحفظ والحضور وآخر التسميع. رمز خاطئ يُرفض.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">14.7</td><td>«إلغاء الرمز»، ثم «إيقاف نسخة الهاتف»</td><td>الولي لا يستطيع الدخول بعد الإلغاء، وصفحة الهاتف لا تفتح بعد الإيقاف.</td><td class="ok">☐</td><td class="note"></td></tr>
+</table>
+
+<h2>١٥. المتانة: ما يحدث في الواقع</h2>
+<table>
+<tr><th>#</th><th>الخطوة</th><th>المتوقَّع</th><th>✓ / ✗</th><th>ملاحظة</th></tr>
+<tr><td class="id">15.1</td><td>افصلوا الواي فاي والإنترنت كلياً واستعملوا البرنامج</td><td>كل شيء يعمل (ما عدا نسخة الهاتف).</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">15.2</td><td>أثناء إدخال حضور: أغلقوا البرنامج بالقوة من «مدير المهام»</td><td>عند إعادة الفتح: ما حُفظ قبل الإغلاق موجود، ولا تلف في البيانات.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">15.3</td><td>أدخلوا أسماء بالعربية مع التشكيل والهمزات، وأسماء بالفرنسية</td><td>تُحفظ وتُبحث وتُطبع سليمة.</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">15.4</td><td>اتركوا البرنامج مفتوحاً 15 دقيقة بعد تعديل</td><td>تظهر نسخة تلقائية جديدة (كل 10 دقائق عند وجود تغيير).</td><td class="ok">☐</td><td class="note"></td></tr>
+<tr><td class="id">15.5</td><td>انظروا إلى كل الشاشات بعين المستعمل</td><td>لا كلمة إنجليزية غير مفهومة، ولا نص مقطوع، ولا زر لا يعمل.</td><td class="ok">☐</td><td class="note"></td></tr>
+</table>
+
+<h2 class="pb">١٦. التحضير ليوم التقديم</h2>
+<ol>
+<li>افتحوا <code>Run-Demo.bat</code> وتدرّبوا على مسار عرض من 15 دقيقة: الرئيسية ← طالب وبروفايله ← حضور اليوم ← تسجيل حفظ وخريطة السور ← تسجيل دفعة وطباعة وصل ← تقرير ← النسخ الاحتياطي.</li>
+<li>لا تعرضوا في التقديم شيئاً عليه ✗ في القائمة.</li>
+<li>جهّزوا أجوبة: أين تُحفظ البيانات؟ ماذا لو تعطّل الحاسوب؟ (المفتاح + الفلاشة) من يرى ماذا؟ (الحسابات والفروع)</li>
+<li>بعد التقديم سلّموا الحزمة <code>Shihab-Trial.zip</code> مع الرسالة.</li>
+</ol>
+
+<h2>سجل المشاكل</h2>
+<table>
+<tr><th style="width:8%">رقم السطر</th><th>ماذا حدث؟ (مع لقطة شاشة)</th><th style="width:14%">الخطورة<br><span style="font-weight:400;font-size:8.5pt">خطيرة / متوسطة / شكلية</span></th></tr>
+<tr><td>&nbsp;</td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td></tr>
+</table>
+<p style="color:#555;font-size:8.5pt">ملاحظة: الأسطر الموسومة «قاعدة» مأخوذة من القواعد الأساسية للمشروع (تسجيل واحد نشط في السنة، الحضور مرتبط بتسجيل صحيح، الحفظ اتحاد مقاطع، التصحيح بسجل لا بتعديل صامت، عدم تسرّب بيانات الفروع، سجل النشاط غير قابل للتعديل). بعض التفاصيل الدقيقة لسلوك الشاشات (مثل رسالة رفض التسجيل المزدوج) لم أتحقق منها على البرنامج نفسه: إن اختلف ما ترونه عن «المتوقَّع» فسجّلوه في سجل المشاكل ونراجعه معاً.</p>
+</body></html>

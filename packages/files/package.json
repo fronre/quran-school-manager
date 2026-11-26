@@ -1,0 +1,1 @@
+{"name":"@mishkat/files","private":true,"version":"0.0.0","type":"module","main":"src/index.ts","dependencies":{"exceljs":"4.4.0"}}
